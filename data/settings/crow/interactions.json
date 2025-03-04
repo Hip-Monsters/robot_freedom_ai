@@ -1,0 +1,232 @@
+{
+    "name": "Squirrel",
+    "vocalization": {
+        "enguagement": [
+            "hey you!"
+        ],
+        "disenguagement": [
+            "go away!"
+        ],
+        "defuse": [
+            "here is a nut"
+        ],
+        "relax": [
+            "give me a nut"
+        ],
+        "inspire": [
+            "lets talk about nuts."
+        ],
+        "quiet": [
+            "shhh"
+        ]
+    },
+    "movement": {
+        "quiet": [
+            [
+                "random",
+                "random",
+                "random"
+            ]
+        ],
+        "enguagement": [
+            [
+                "random",
+                "random",
+                "random"
+            ]
+        ],
+        "disenguagement": [
+            [
+                "random",
+                "random",
+                "random"
+            ]
+        ],
+        "defuse": [
+            [
+                "random",
+                "random",
+                "random"
+            ]
+        ],
+        "relax": [
+            [
+                "random",
+                "random",
+                "random"
+            ]
+        ],
+        "inspire": [
+            [
+                "random",
+                "random",
+                "random"
+            ]
+        ]
+    },
+    "emotions": {
+        "emotion_factors": {
+            "sense": {
+                "noise": {
+                    "sad": 0,
+                    "surprised": 1,
+                    "bored": -0.1,
+                    "fear": 0.5,
+                    "happy": 0,
+                    "disgust": 0
+                },
+                "speech": {
+                    "sad": -0.5,
+                    "surprised": 0,
+                    "bored": -0.1,
+                    "fear": -0.05,
+                    "happy": 0.1,
+                    "disgust": -0.05
+                },
+                "quiet": {
+                    "sad": 0.5,
+                    "surprised": -1,
+                    "bored": 1,
+                    "fear": 0,
+                    "happy": -0.1,
+                    "disgust": 0.05
+                },
+                "movement": {
+                    "sad": 0,
+                    "surprised": 0.5,
+                    "bored": -0.1,
+                    "fear": 0.05,
+                    "happy": 0,
+                    "disgust": -0.05
+                },
+                "distance": {
+                    "sad": 0.5,
+                    "surprised": -0.5,
+                    "bored": -0.1,
+                    "fear": -0.05,
+                    "happy": 0.1,
+                    "disgust": -0.05
+                },
+                "tempature": {
+                    "sad": -0.5,
+                    "bored": 0.5
+                },
+                "humidity": {
+                    "sad": -0.5,
+                    "bored": 0.5
+                },
+                "touch": {
+                    "sad": -0.5,
+                    "bored": 0.5
+                },
+                "balence": {
+                    "sad": -0.5,
+                    "surprised": 0.5,
+                    "bored": 0.05
+                },
+                "light": {
+                    "sad": -0.5,
+                    "bored": 0.5
+                }
+            }
+        }
+    },
+    "experience": {
+        "goal": {
+            "enguagement": {
+                "tones": [
+                    "Absurd",
+                    "Witty",
+                    "Amused"
+                ]
+            },
+            "defuse": {
+                "tones": [
+                    "Appreciative",
+                    "Admiring"
+                ]
+            },
+            "inspire": {
+                "tones": [
+                    "Inspirational",
+                    "Informative",
+                    "Thoughtful"
+                ]
+            },
+            "disenguagement": {
+                "tones": [
+                    "Diplomatic"
+                ]
+            },
+            "relax": {
+                "tones": [
+                    "Altruistic",
+                    "Benevolent"
+                ]
+            }
+        }
+    },
+    "motivations": {
+        "objectives": {
+            "enguagement": {
+                "mood": [
+                    "happy",
+                    "sad"
+                ],
+                "met": [
+                    "creating",
+                    "processing"
+                ],
+                "unmet": [
+                    "acquisition"
+                ]
+            },
+            "disenguagement": {
+                "mood": [
+                    "disgust"
+                ],
+                "met": [
+                    "acquisition"
+                ],
+                "unmet": [
+                    "creating",
+                    "processing"
+                ]
+            },
+            "defuse": {
+                "mood": [
+                    "fear",
+                    "anger"
+                ],
+                "met": [
+                    "enguagement"
+                ],
+                "unmet": [
+                    "angry"
+                ]
+            },
+            "relax": {
+                "mood": [
+                    "surprise"
+                ],
+                "met": [
+                    "enguagement"
+                ],
+                "unmet": [
+                    "angry"
+                ]
+            },
+            "inspire": {
+                "mood": [
+                    "bored"
+                ],
+                "met": [
+                    "enguagement"
+                ],
+                "unmet": [
+                    "novelity"
+                ]
+            }
+        }
+    }
+}

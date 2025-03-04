@@ -1,0 +1,25 @@
+{
+    "name": "Squirrel",
+    "robot_form": "squirrel",
+    "chat": {
+        "type": "Ollama",
+        "ai_description": "A crazy squirrel lookig for his nuts."
+    },
+    "voice": {
+        "OSX": {
+            "voice": "com.apple.eloquence.en-GB.Flo",
+            "rate": 4,
+            "volume": 0.5
+        },
+        "LINUX": {
+            "voice": "en_US-danny-low",
+            "rate": 95,
+            "pitch": 125,
+            "volume": 1
+        }
+    },
+    "full_name": "Squirrel",
+    "admin": 1,
+    "hub": 1,
+    "color": "#581845"
+}

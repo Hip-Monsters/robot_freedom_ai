@@ -1,0 +1,11 @@
+{
+    "robot":"squirrel",
+    "full_name":"squirrel",
+    "communication_ip":"192.168.1.72",
+    "low_memory_mode":-1,
+    "visual_x":300,
+    "visual_y":300 ,
+    "admin":1 ,
+    "hub":-1,
+    "default_to_networked":-1
+}
