@@ -1,9 +1,0 @@
-{
-   "name": "number_3",
-   "traits": { "kindness": 0.8,
-               "emotional_stability":  0.2,
-               "openness":  0.5,
-               "socialability":  0.6,
-               "thoughtfulness":  0.9
-             }
-}
