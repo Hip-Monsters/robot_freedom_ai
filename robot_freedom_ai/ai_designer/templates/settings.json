@@ -1,0 +1,18 @@
+{
+    "name" : "<New Robot>",
+    "full_name" : "<New Robot>",
+    "robot_form" : "human", 
+    "admin":-1,
+    "hub":-1,
+    "color": "#F5FFFA",
+    "chat" : {"type":"Ollama", 
+    "ai_description": "You are a new robot."},
+    "voice": {"OSX" : {"voice"  : "com.apple.eloquence.en-GB.Flo",
+                       "rate"   : 4,
+                       "volume" : 0.5},
+              "LINUX": {"voice" : "en_GB-jenny_dioco-medium",
+                        "rate"  : 115,
+                        "pitch" : 75,
+                        "volume": 1}
+    }
+}

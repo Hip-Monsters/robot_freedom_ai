@@ -1,0 +1,250 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 500px;
+                 height: 500px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 500px;
+                 height: 500px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "emotional_surpressors", "label": "emotional_surpressors", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "enguagement", "label": "enguagement", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "disenguagement", "label": "disenguagement", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "defuse", "label": "defuse", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "relax", "label": "relax", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "inspire", "label": "inspire", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "happy", "label": "happy", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "sad", "label": "sad", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "fear", "label": "fear", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "disgust", "label": "disgust", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "anger", "label": "anger", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "bored", "label": "bored", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "surprise", "label": "surprise", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "time_delta", "label": "time_delta", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "stimuli_class", "label": "stimuli_class", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "objectives", "label": "objectives", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "mood", "label": "mood", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "met", "label": "met", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "unmet", "label": "unmet", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "noise", "label": "noise", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "speech", "label": "speech", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "quiet", "label": "quiet", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "movement", "label": "movement", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "distance", "label": "distance", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "tempature", "label": "tempature", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "humidity", "label": "humidity", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "touch", "label": "touch", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "balence", "label": "balence", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "light", "label": "light", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "objective_2_strategy", "label": "objective_2_strategy", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "enguagement_tones", "label": "enguagement_tones", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "unpleased", "label": "unpleased", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "content", "label": "content", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "brave", "label": "brave", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "satisfaction", "label": "satisfaction", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "calm", "label": "calm", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "enthusiastic", "label": "enthusiastic", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "nonplussed", "label": "nonplussed", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "disenguagement_tones", "label": "disenguagement_tones", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "defuse_tones", "label": "defuse_tones", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "relax_tones", "label": "relax_tones", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "surprised", "label": "surprised", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "inspire_tones", "label": "inspire_tones", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "enguagement_mood_happy", "label": "enguagement_mood_happy", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "enguagement_mood_sad", "label": "enguagement_mood_sad", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "disenguagement_mood_disgust", "label": "disenguagement_mood_disgust", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "defuse_mood_fear", "label": "defuse_mood_fear", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "defuse_mood_anger", "label": "defuse_mood_anger", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "relax_mood_surprise", "label": "relax_mood_surprise", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "inspire_mood_bored", "label": "inspire_mood_bored", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "enguagement_met_creating", "label": "enguagement_met_creating", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "enguagement_met_processing", "label": "enguagement_met_processing", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "disenguagement_met_acquisition", "label": "disenguagement_met_acquisition", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "defuse_met_enguagement", "label": "defuse_met_enguagement", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "relax_met_enguagement", "label": "relax_met_enguagement", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "inspire_met_enguagement", "label": "inspire_met_enguagement", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "enguagement_unmet_acquisition", "label": "enguagement_unmet_acquisition", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "disenguagement_unmet_creating", "label": "disenguagement_unmet_creating", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "disenguagement_unmet_processing", "label": "disenguagement_unmet_processing", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "defuse_unmet_angry", "label": "defuse_unmet_angry", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "relax_unmet_angry", "label": "relax_unmet_angry", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "inspire_unmet_novelity", "label": "inspire_unmet_novelity", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "stimuli_goal_factors", "label": "stimuli_goal_factors", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "novelity", "label": "novelity", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "acquisition", "label": "acquisition", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "creating", "label": "creating", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "processing", "label": "processing", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "emotion_factors", "label": "emotion_factors", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "stimuli_factors", "label": "stimuli_factors", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "emotional_stability", "label": "emotional_stability", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "thoughtfulness", "label": "thoughtfulness", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "strategies", "label": "strategies", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Diplomatic", "label": "Diplomatic", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Animated", "label": "Animated", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Callous", "label": "Callous", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Inspirational", "label": "Inspirational", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Apologetic", "label": "Apologetic", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Cautionary", "label": "Cautionary", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Bitter", "label": "Bitter", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Belligerent", "label": "Belligerent", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Appreciative", "label": "Appreciative", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Assertive", "label": "Assertive", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Accusatory", "label": "Accusatory", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Amused", "label": "Amused", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Admiring", "label": "Admiring", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Aggressive", "label": "Aggressive", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Apathetic", "label": "Apathetic", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Caustic", "label": "Caustic", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Thoughtful", "label": "Thoughtful", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Ardent", "label": "Ardent", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Acerbic", "label": "Acerbic", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Benevolent", "label": "Benevolent", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Absurd", "label": "Absurd", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Aggrieved", "label": "Aggrieved", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Altruistic", "label": "Altruistic", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Witty", "label": "Witty", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Direct", "label": "Direct", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Angry", "label": "Angry", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Ambivalent", "label": "Ambivalent", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Candid", "label": "Candid", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Informative", "label": "Informative", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Arrogant", "label": "Arrogant", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Appreciative.", "label": "Appreciative.", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"class": "emotional_surpressors", "from": "emotional_surpressors", "to": "enguagement", "width": 1}, {"class": "emotional_surpressors", "from": "emotional_surpressors", "to": "disenguagement", "width": 1}, {"class": "emotional_surpressors", "from": "emotional_surpressors", "to": "defuse", "width": 1}, {"class": "emotional_surpressors", "from": "emotional_surpressors", "to": "relax", "width": 1}, {"class": "emotional_surpressors", "from": "emotional_surpressors", "to": "inspire", "width": 1}, {"class": "emotional_surpressors", "from": "enguagement", "to": "happy", "width": 0.0}, {"class": "emotional_surpressors", "from": "enguagement", "to": "sad", "width": 0.0}, {"class": "emotional_surpressors", "from": "enguagement", "to": "fear", "width": 0.0}, {"class": "emotional_surpressors", "from": "enguagement", "to": "disgust", "width": 0.0}, {"class": "emotional_surpressors", "from": "enguagement", "to": "anger", "width": 0.0}, {"class": "emotional_surpressors", "from": "enguagement", "to": "bored", "width": 0.0}, {"class": "emotional_surpressors", "from": "enguagement", "to": "surprise", "width": 0.0}, {"class": "emotional_surpressors", "from": "enguagement", "to": "time_delta", "width": 0.0}, {"class": "emotional_surpressors", "from": "enguagement", "to": "stimuli_class", "width": 0.0}, {"class": "objectives", "from": "enguagement", "to": "objectives", "width": 1}, {"class": "objectives", "from": "enguagement", "to": "mood", "width": 1}, {"class": "objectives", "from": "enguagement", "to": "met", "width": 1}, {"class": "objectives", "from": "enguagement", "to": "unmet", "width": 1}, {"class": "stimuli_goal_factors", "from": "enguagement", "to": "noise", "width": 0.0}, {"class": "stimuli_goal_factors", "from": "enguagement", "to": "speech", "width": 0.5}, {"class": "stimuli_goal_factors", "from": "enguagement", "to": "quiet", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "enguagement", "to": "movement", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "enguagement", "to": "distance", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "enguagement", "to": "tempature", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "enguagement", "to": "humidity", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "enguagement", "to": "touch", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "enguagement", "to": "balence", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "enguagement", "to": "light", "width": -0.5}, {"class": "objective_2_strategy", "from": "enguagement", "to": "objective_2_strategy", "width": 0.5}, {"class": "objective_2_strategy", "from": "enguagement", "to": "enguagement_tones", "width": 1}, {"class": "emotional_surpressors", "from": "happy", "to": "disenguagement", "width": 0.0}, {"class": "emotional_surpressors", "from": "happy", "to": "defuse", "width": 0.0}, {"class": "emotional_surpressors", "from": "happy", "to": "relax", "width": 0.9999990068039226}, {"class": "emotional_surpressors", "from": "happy", "to": "inspire", "width": 0.0}, {"adj": 0.0, "class": "emotion_factors", "from": "happy", "to": "noise", "width": 0.0}, {"adj": 0.0, "class": "emotion_factors", "from": "happy", "to": "speech", "width": 0.1}, {"adj": 0.0, "class": "emotion_factors", "from": "happy", "to": "quiet", "width": -0.1}, {"adj": 0.0, "class": "emotion_factors", "from": "happy", "to": "movement", "width": 0}, {"adj": 0.0, "class": "emotion_factors", "from": "happy", "to": "distance", "width": 0.1}, {"class": "flip", "from": "happy", "to": "unpleased", "width": 1}, {"class": "emotion_factors", "from": "happy", "to": "touch", "width": 0.9999992116055278}, {"class": "emotional_surpressors", "from": "sad", "to": "disenguagement", "width": 0.0}, {"class": "emotional_surpressors", "from": "sad", "to": "defuse", "width": 0.0}, {"class": "emotional_surpressors", "from": "sad", "to": "relax", "width": 0.9999990068039226}, {"class": "emotional_surpressors", "from": "sad", "to": "inspire", "width": 0.0}, {"adj": 0.0, "class": "emotion_factors", "from": "sad", "to": "noise", "width": 0.0}, {"adj": 0.0, "class": "emotion_factors", "from": "sad", "to": "speech", "width": -0.5}, {"adj": 0.0, "class": "emotion_factors", "from": "sad", "to": "quiet", "width": 0.5}, {"adj": 0.0, "class": "emotion_factors", "from": "sad", "to": "movement", "width": 0}, {"adj": 0.0, "class": "emotion_factors", "from": "sad", "to": "distance", "width": 0.5}, {"adj": 0.0, "class": "emotion_factors", "from": "sad", "to": "tempature", "width": -0.5}, {"adj": 0.0, "class": "emotion_factors", "from": "sad", "to": "humidity", "width": -0.5}, {"adj": 0.9999992116055278, "class": "emotion_factors", "from": "sad", "to": "touch", "width": -0.5}, {"adj": 0.0, "class": "emotion_factors", "from": "sad", "to": "balence", "width": -0.5}, {"adj": 0.0, "class": "emotion_factors", "from": "sad", "to": "light", "width": -0.5}, {"class": "flip", "from": "sad", "to": "content", "width": 1}, {"class": "emotional_surpressors", "from": "fear", "to": "disenguagement", "width": 0.0}, {"class": "emotional_surpressors", "from": "fear", "to": "defuse", "width": 0.0}, {"class": "emotional_surpressors", "from": "fear", "to": "relax", "width": 1.0009905382433102}, {"class": "emotional_surpressors", "from": "fear", "to": "inspire", "width": 0.0}, {"adj": 0.0, "class": "emotion_factors", "from": "fear", "to": "noise", "width": 0.8333333333333334}, {"adj": 0.0, "class": "emotion_factors", "from": "fear", "to": "speech", "width": -0.05}, {"adj": 0.0, "class": "emotion_factors", "from": "fear", "to": "quiet", "width": 0}, {"adj": 0.0, "class": "emotion_factors", "from": "fear", "to": "movement", "width": 0.05}, {"adj": 0.0, "class": "emotion_factors", "from": "fear", "to": "distance", "width": -0.05}, {"class": "flip", "from": "fear", "to": "brave", "width": 1}, {"class": "emotion_factors", "from": "fear", "to": "touch", "width": 1.0007923926245508}, {"class": "emotional_surpressors", "from": "disgust", "to": "disenguagement", "width": 0.0}, {"class": "emotional_surpressors", "from": "disgust", "to": "defuse", "width": 0.0}, {"class": "emotional_surpressors", "from": "disgust", "to": "relax", "width": 0.9999990068039226}, {"class": "emotional_surpressors", "from": "disgust", "to": "inspire", "width": 0.0}, {"adj": 0.0, "class": "emotion_factors", "from": "disgust", "to": "noise", "width": 0.0}, {"adj": 0.0, "class": "emotion_factors", "from": "disgust", "to": "speech", "width": -0.05}, {"adj": 0.0, "class": "emotion_factors", "from": "disgust", "to": "quiet", "width": 0.05}, {"adj": 0.0, "class": "emotion_factors", "from": "disgust", "to": "movement", "width": -0.05}, {"adj": 0.0, "class": "emotion_factors", "from": "disgust", "to": "distance", "width": -0.05}, {"class": "flip", "from": "disgust", "to": "satisfaction", "width": 1}, {"class": "emotion_factors", "from": "disgust", "to": "touch", "width": 0.9999992116055278}, {"class": "emotional_surpressors", "from": "anger", "to": "disenguagement", "width": 0.0}, {"class": "emotional_surpressors", "from": "anger", "to": "defuse", "width": 0.0}, {"class": "emotional_surpressors", "from": "anger", "to": "relax", "width": 0.9999990068039226}, {"class": "emotional_surpressors", "from": "anger", "to": "inspire", "width": 0.0}, {"class": "flip", "from": "anger", "to": "calm", "width": 1}, {"class": "emotion_factors", "from": "anger", "to": "touch", "width": 0.9999992116055278}, {"class": "emotional_surpressors", "from": "bored", "to": "disenguagement", "width": 0.0}, {"class": "emotional_surpressors", "from": "bored", "to": "defuse", "width": 0.0}, {"class": "emotional_surpressors", "from": "bored", "to": "relax", "width": 0.9980159408103016}, {"class": "emotional_surpressors", "from": "bored", "to": "inspire", "width": 0.0}, {"adj": 0.0, "class": "emotion_factors", "from": "bored", "to": "noise", "width": -0.8333333333333334}, {"adj": 0.0, "class": "emotion_factors", "from": "bored", "to": "speech", "width": -0.1}, {"adj": 0.0, "class": "emotion_factors", "from": "bored", "to": "quiet", "width": 1}, {"adj": 0.0, "class": "emotion_factors", "from": "bored", "to": "movement", "width": -0.1}, {"adj": 0.0, "class": "emotion_factors", "from": "bored", "to": "distance", "width": -0.1}, {"adj": 0.0, "class": "emotion_factors", "from": "bored", "to": "tempature", "width": 0.5}, {"adj": 0.0, "class": "emotion_factors", "from": "bored", "to": "humidity", "width": 0.5}, {"adj": 0.9984128463969643, "class": "emotion_factors", "from": "bored", "to": "touch", "width": 0.5}, {"adj": 0.0, "class": "emotion_factors", "from": "bored", "to": "balence", "width": 0.05}, {"adj": 0.0, "class": "emotion_factors", "from": "bored", "to": "light", "width": 0.5}, {"class": "flip", "from": "bored", "to": "enthusiastic", "width": 1}, {"class": "emotional_surpressors", "from": "surprise", "to": "disenguagement", "width": 0.0}, {"class": "emotional_surpressors", "from": "surprise", "to": "defuse", "width": 0.0}, {"class": "emotional_surpressors", "from": "surprise", "to": "relax", "width": 0.0}, {"class": "emotional_surpressors", "from": "surprise", "to": "inspire", "width": 0.0}, {"class": "flip", "from": "surprise", "to": "nonplussed", "width": 1}, {"class": "emotional_surpressors", "from": "time_delta", "to": "disenguagement", "width": 0.0}, {"class": "emotional_surpressors", "from": "time_delta", "to": "defuse", "width": 0.0}, {"class": "emotional_surpressors", "from": "time_delta", "to": "relax", "width": 0.0}, {"class": "emotional_surpressors", "from": "time_delta", "to": "inspire", "width": 0.0}, {"class": "emotional_surpressors", "from": "stimuli_class", "to": "disenguagement", "width": 0.0}, {"class": "emotional_surpressors", "from": "stimuli_class", "to": "defuse", "width": 0.0}, {"class": "emotional_surpressors", "from": "stimuli_class", "to": "relax", "width": 0.0}, {"class": "emotional_surpressors", "from": "stimuli_class", "to": "inspire", "width": 0.0}, {"class": "objectives", "from": "disenguagement", "to": "objectives", "width": 1}, {"class": "objectives", "from": "disenguagement", "to": "mood", "width": 1}, {"class": "objectives", "from": "disenguagement", "to": "met", "width": 1}, {"class": "objectives", "from": "disenguagement", "to": "unmet", "width": 1}, {"class": "objective_2_strategy", "from": "disenguagement", "to": "objective_2_strategy", "width": 1}, {"class": "objective_2_strategy", "from": "disenguagement", "to": "disenguagement_tones", "width": 1}, {"class": "objectives", "from": "defuse", "to": "objectives", "width": 1}, {"class": "objectives", "from": "defuse", "to": "mood", "width": 1}, {"class": "objectives", "from": "defuse", "to": "met", "width": 1}, {"class": "objectives", "from": "defuse", "to": "unmet", "width": 1}, {"class": "objective_2_strategy", "from": "defuse", "to": "objective_2_strategy", "width": 1}, {"class": "objective_2_strategy", "from": "defuse", "to": "defuse_tones", "width": 1}, {"class": "objectives", "from": "relax", "to": "objectives", "width": 1}, {"class": "objectives", "from": "relax", "to": "mood", "width": 1}, {"class": "objectives", "from": "relax", "to": "met", "width": 1}, {"class": "objectives", "from": "relax", "to": "unmet", "width": 1}, {"class": "objective_2_strategy", "from": "relax", "to": "objective_2_strategy", "width": 1}, {"class": "objective_2_strategy", "from": "relax", "to": "relax_tones", "width": 1}, {"class": "emotional_surpressors", "from": "relax", "to": "surprised", "width": 1.0009925239633413}, {"class": "objectives", "from": "inspire", "to": "objectives", "width": 1}, {"class": "objectives", "from": "inspire", "to": "mood", "width": 1}, {"class": "objectives", "from": "inspire", "to": "met", "width": 1}, {"class": "objectives", "from": "inspire", "to": "unmet", "width": 1}, {"class": "objective_2_strategy", "from": "inspire", "to": "objective_2_strategy", "width": 1}, {"class": "objective_2_strategy", "from": "inspire", "to": "inspire_tones", "width": 1}, {"class": "objectives", "from": "mood", "to": "enguagement_mood_happy", "width": 1}, {"class": "objectives", "from": "mood", "to": "enguagement_mood_sad", "width": 1}, {"class": "objectives", "from": "mood", "to": "disenguagement_mood_disgust", "width": 1}, {"class": "objectives", "from": "mood", "to": "defuse_mood_fear", "width": 1}, {"class": "objectives", "from": "mood", "to": "defuse_mood_anger", "width": 1}, {"class": "objectives", "from": "mood", "to": "relax_mood_surprise", "width": 1}, {"class": "objectives", "from": "mood", "to": "inspire_mood_bored", "width": 1}, {"class": "objectives", "from": "met", "to": "enguagement_met_creating", "width": 1}, {"class": "objectives", "from": "met", "to": "enguagement_met_processing", "width": 1}, {"class": "objectives", "from": "met", "to": "disenguagement_met_acquisition", "width": 1}, {"class": "objectives", "from": "met", "to": "defuse_met_enguagement", "width": 1}, {"class": "objectives", "from": "met", "to": "relax_met_enguagement", "width": 1}, {"class": "objectives", "from": "met", "to": "inspire_met_enguagement", "width": 1}, {"class": "objectives", "from": "unmet", "to": "enguagement_unmet_acquisition", "width": 1}, {"class": "objectives", "from": "unmet", "to": "disenguagement_unmet_creating", "width": 1}, {"class": "objectives", "from": "unmet", "to": "disenguagement_unmet_processing", "width": 1}, {"class": "objectives", "from": "unmet", "to": "defuse_unmet_angry", "width": 1}, {"class": "objectives", "from": "unmet", "to": "relax_unmet_angry", "width": 1}, {"class": "objectives", "from": "unmet", "to": "inspire_unmet_novelity", "width": 1}, {"class": "stimuli_goal_factors", "from": "stimuli_goal_factors", "to": "noise", "width": 1}, {"class": "stimuli_goal_factors", "from": "stimuli_goal_factors", "to": "speech", "width": 1}, {"class": "stimuli_goal_factors", "from": "stimuli_goal_factors", "to": "quiet", "width": 1}, {"class": "stimuli_goal_factors", "from": "stimuli_goal_factors", "to": "movement", "width": 1}, {"class": "stimuli_goal_factors", "from": "stimuli_goal_factors", "to": "distance", "width": 1}, {"class": "stimuli_goal_factors", "from": "stimuli_goal_factors", "to": "tempature", "width": 1}, {"class": "stimuli_goal_factors", "from": "stimuli_goal_factors", "to": "humidity", "width": 1}, {"class": "stimuli_goal_factors", "from": "stimuli_goal_factors", "to": "touch", "width": 1}, {"class": "stimuli_goal_factors", "from": "stimuli_goal_factors", "to": "balence", "width": 1}, {"class": "stimuli_goal_factors", "from": "stimuli_goal_factors", "to": "light", "width": 1}, {"class": "stimuli_goal_factors", "from": "noise", "to": "novelity", "width": 0.7}, {"class": "stimuli_goal_factors", "from": "noise", "to": "acquisition", "width": 0.1}, {"class": "stimuli_goal_factors", "from": "noise", "to": "creating", "width": 0.0}, {"class": "stimuli_goal_factors", "from": "noise", "to": "processing", "width": 0.0}, {"class": "emotion_factors", "from": "noise", "to": "emotion_factors", "width": 1}, {"adj": 0.0, "class": "emotion_factors", "from": "noise", "to": "surprised", "width": 0.8333333333333334}, {"class": "stimuli_factors", "from": "noise", "to": "stimuli_factors", "width": 1}, {"class": "stimuli_factors", "from": "noise", "to": "emotional_stability", "width": -0.5}, {"class": "stimuli_factors", "from": "noise", "to": "thoughtfulness", "width": 0.5}, {"class": "stimuli_goal_factors", "from": "novelity", "to": "speech", "width": 0.2}, {"class": "stimuli_goal_factors", "from": "novelity", "to": "quiet", "width": -0.05}, {"class": "stimuli_goal_factors", "from": "novelity", "to": "movement", "width": -0.05}, {"class": "stimuli_goal_factors", "from": "novelity", "to": "distance", "width": -0.05}, {"class": "stimuli_goal_factors", "from": "novelity", "to": "tempature", "width": -0.05}, {"class": "stimuli_goal_factors", "from": "novelity", "to": "humidity", "width": -0.05}, {"class": "stimuli_goal_factors", "from": "novelity", "to": "touch", "width": -0.05}, {"class": "stimuli_goal_factors", "from": "novelity", "to": "balence", "width": -0.05}, {"class": "stimuli_goal_factors", "from": "novelity", "to": "light", "width": -0.05}, {"class": "stimuli_goal_factors", "from": "acquisition", "to": "speech", "width": 0.5}, {"class": "stimuli_goal_factors", "from": "acquisition", "to": "quiet", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "acquisition", "to": "movement", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "acquisition", "to": "distance", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "acquisition", "to": "tempature", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "acquisition", "to": "humidity", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "acquisition", "to": "touch", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "acquisition", "to": "balence", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "acquisition", "to": "light", "width": -0.5}, {"class": "stimuli_goal_factors", "from": "creating", "to": "speech", "width": 0.25}, {"class": "stimuli_goal_factors", "from": "creating", "to": "quiet", "width": -0.25}, {"class": "stimuli_goal_factors", "from": "creating", "to": "movement", "width": -0.25}, {"class": "stimuli_goal_factors", "from": "creating", "to": "distance", "width": -0.25}, {"class": "stimuli_goal_factors", "from": "creating", "to": "tempature", "width": -0.25}, {"class": "stimuli_goal_factors", "from": "creating", "to": "humidity", "width": -0.25}, {"class": "stimuli_goal_factors", "from": "creating", "to": "touch", "width": -0.25}, {"class": "stimuli_goal_factors", "from": "creating", "to": "balence", "width": -0.25}, {"class": "stimuli_goal_factors", "from": "creating", "to": "light", "width": -0.25}, {"class": "stimuli_goal_factors", "from": "processing", "to": "speech", "width": 0.0}, {"class": "stimuli_goal_factors", "from": "processing", "to": "quiet", "width": 0.25}, {"class": "stimuli_goal_factors", "from": "processing", "to": "movement", "width": 0.25}, {"class": "stimuli_goal_factors", "from": "processing", "to": "distance", "width": 0.25}, {"class": "stimuli_goal_factors", "from": "processing", "to": "tempature", "width": 0.25}, {"class": "stimuli_goal_factors", "from": "processing", "to": "humidity", "width": 0.25}, {"class": "stimuli_goal_factors", "from": "processing", "to": "touch", "width": 0.25}, {"class": "stimuli_goal_factors", "from": "processing", "to": "balence", "width": 0.25}, {"class": "stimuli_goal_factors", "from": "processing", "to": "light", "width": 0.25}, {"class": "emotion_factors", "from": "speech", "to": "emotion_factors", "width": 1}, {"adj": 0.0, "class": "emotion_factors", "from": "speech", "to": "surprised", "width": 0}, {"class": "stimuli_factors", "from": "speech", "to": "stimuli_factors", "width": 1}, {"class": "stimuli_factors", "from": "speech", "to": "emotional_stability", "width": -0.25}, {"class": "stimuli_factors", "from": "speech", "to": "thoughtfulness", "width": 0.5}, {"class": "emotion_factors", "from": "quiet", "to": "emotion_factors", "width": 1}, {"adj": 0.0, "class": "emotion_factors", "from": "quiet", "to": "surprised", "width": -1}, {"class": "stimuli_factors", "from": "quiet", "to": "stimuli_factors", "width": 1}, {"class": "stimuli_factors", "from": "quiet", "to": "emotional_stability", "width": -0.25}, {"class": "stimuli_factors", "from": "quiet", "to": "thoughtfulness", "width": 0.5}, {"class": "emotion_factors", "from": "movement", "to": "emotion_factors", "width": 1}, {"adj": 0.0, "class": "emotion_factors", "from": "movement", "to": "surprised", "width": 0.5}, {"class": "stimuli_factors", "from": "movement", "to": "stimuli_factors", "width": 1}, {"class": "stimuli_factors", "from": "movement", "to": "emotional_stability", "width": -0.25}, {"class": "stimuli_factors", "from": "movement", "to": "thoughtfulness", "width": 0.5}, {"class": "emotion_factors", "from": "distance", "to": "emotion_factors", "width": 1}, {"adj": 0.0, "class": "emotion_factors", "from": "distance", "to": "surprised", "width": -0.5}, {"class": "stimuli_factors", "from": "distance", "to": "stimuli_factors", "width": 1}, {"class": "stimuli_factors", "from": "distance", "to": "emotional_stability", "width": -0.25}, {"class": "stimuli_factors", "from": "distance", "to": "thoughtfulness", "width": 0.5}, {"class": "emotion_factors", "from": "tempature", "to": "emotion_factors", "width": 1}, {"class": "stimuli_factors", "from": "tempature", "to": "stimuli_factors", "width": 1}, {"class": "stimuli_factors", "from": "tempature", "to": "emotional_stability", "width": -0.25}, {"class": "stimuli_factors", "from": "tempature", "to": "thoughtfulness", "width": 0.5}, {"class": "emotion_factors", "from": "humidity", "to": "emotion_factors", "width": 1}, {"class": "stimuli_factors", "from": "humidity", "to": "stimuli_factors", "width": 1}, {"class": "stimuli_factors", "from": "humidity", "to": "emotional_stability", "width": -0.25}, {"class": "stimuli_factors", "from": "humidity", "to": "thoughtfulness", "width": 0.5}, {"class": "emotion_factors", "from": "touch", "to": "emotion_factors", "width": 1}, {"class": "stimuli_factors", "from": "touch", "to": "stimuli_factors", "width": 1}, {"class": "stimuli_factors", "from": "touch", "to": "emotional_stability", "width": -0.25}, {"class": "stimuli_factors", "from": "touch", "to": "thoughtfulness", "width": 0.5}, {"class": "emotion_factors", "from": "touch", "to": "surprised", "width": 1.0007939749940167}, {"class": "emotion_factors", "from": "balence", "to": "emotion_factors", "width": 1}, {"adj": 0.0, "class": "emotion_factors", "from": "balence", "to": "surprised", "width": 0.5}, {"class": "stimuli_factors", "from": "balence", "to": "stimuli_factors", "width": 1}, {"class": "stimuli_factors", "from": "balence", "to": "emotional_stability", "width": -0.25}, {"class": "stimuli_factors", "from": "balence", "to": "thoughtfulness", "width": 0.5}, {"class": "emotion_factors", "from": "light", "to": "emotion_factors", "width": 1}, {"class": "stimuli_factors", "from": "light", "to": "stimuli_factors", "width": 1}, {"class": "stimuli_factors", "from": "light", "to": "emotional_stability", "width": -0.25}, {"class": "stimuli_factors", "from": "light", "to": "thoughtfulness", "width": 0.5}, {"class": "mapped_strategies", "from": "strategies", "to": "Diplomatic", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Animated", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Callous", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Inspirational", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Apologetic", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Cautionary", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Bitter", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Belligerent", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Appreciative", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Assertive", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Accusatory", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Amused", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Admiring", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Aggressive", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Apathetic", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Caustic", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Thoughtful", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Ardent", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Acerbic", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Benevolent", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Absurd", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Aggrieved", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Altruistic", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Witty", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Direct", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Angry", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Ambivalent", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Candid", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Informative", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Arrogant", "width": 1}, {"class": "mapped_strategies", "from": "strategies", "to": "Appreciative.", "width": 1}, {"class": "objective_2_strategy", "from": "Diplomatic", "to": "disenguagement_tones", "width": 1}, {"class": "objective_2_strategy", "from": "Inspirational", "to": "inspire_tones", "width": 1}, {"class": "objective_2_strategy", "from": "Appreciative", "to": "defuse_tones", "width": 1}, {"class": "objective_2_strategy", "from": "Amused", "to": "enguagement_tones", "width": 1}, {"class": "objective_2_strategy", "from": "Admiring", "to": "defuse_tones", "width": 1}, {"class": "objective_2_strategy", "from": "Thoughtful", "to": "inspire_tones", "width": 1}, {"class": "objective_2_strategy", "from": "Benevolent", "to": "relax_tones", "width": 0.8748617323103584}, {"class": "objective_2_strategy", "from": "Absurd", "to": "enguagement_tones", "width": 1}, {"class": "objective_2_strategy", "from": "Altruistic", "to": "relax_tones", "width": 0.8559518769874328}, {"class": "objective_2_strategy", "from": "Witty", "to": "enguagement_tones", "width": 1}, {"class": "objective_2_strategy", "from": "Informative", "to": "inspire_tones", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

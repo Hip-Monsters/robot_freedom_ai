@@ -1,0 +1,19 @@
+{
+   "name": "<New robot>",
+   "vocalization"  :{
+       "engagement":  ["Hello there!", "I feel alone"],
+       "disenguagement" :  ["What are you doing?" ,"Excuse you!", "Whatever."],
+       "defuse"    :  ["Someone there?", "What was that!"],
+       "relax"     :  ["Sing me a song."],
+       "inspire"   :  ["What do you want to do?"],
+       "quiet"     :  []
+                      },
+   "movement"      : {
+                 "quiet"     :  [["random", "random", "random"]],
+                 "enguagement"    :  [["random", "random", "random"]],
+                 "disenguagement" :  [["random", "random", "random"]],
+                 "defuse"    :  [["random", "random", "random"]],
+                 "relax"     :  [["random", "random", "random"]],
+                 "inspire"   :  [["random", "random", "random"]]  
+   } 
+}
