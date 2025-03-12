@@ -1,5 +1,6 @@
 #  RobotFreedomAI 
 
+[<img src="./robot_freedom_ai/assets/logo_small.png">]
 The official RobotFreedom.com robotic control library.
 
 
