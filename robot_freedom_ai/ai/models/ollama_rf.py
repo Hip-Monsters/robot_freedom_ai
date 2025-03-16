@@ -46,18 +46,25 @@ ROBOT_ROLES = ["interviewing", "educating", "conversing"]
 ROLES       =  ["ai","response", "robot" , "assistant" ,  "machine" , "two", "three", "four", "with",
                 "stranger",   "man", "human", "system", ]  
  
-class OllamaRF(object):
+def input_cleanup(input):
     """
     
     """
+    return input 
 
-    def __init__(self, config, cognitive_control, personality, lt_memory, st_memory, full_name, name ,topics , tones=["Appreciative"], 
+class OllamaRF(object):
+    """
+    
+    """ 
+
+    def __init__(self, config, cognitive_control, personality, lt_memory, st_memory, 
+                 full_name, name ,topics , tones=["Appreciative"], 
                   params= {},   log=True, repeat_log= True):
         """
  
         """ 
         self.log          = True
-        self.tons         = tones
+        self.tones        = tones
         self.verbose      = False 
         self.low_mem_mode = False
         self.context_db   = False
@@ -80,6 +87,12 @@ class OllamaRF(object):
         self.min_resp_len = 2
         self.min_overlap = .55
         self.min_key_wrd_scr = .04
+
+
+        if 'input_cleanup' in params: 
+           self.input_cleanup =  params["input_cleanup"] 
+        else:
+           self.input_cleanup = input_cleanup 
 
         self.cleanup       = ["'",  "`",  '"']
 
@@ -119,7 +132,7 @@ class OllamaRF(object):
         f_log.write("Started new session\n")  
         f_log.close()
 
-        self.load_models(full_name , name, topics, tones)
+        self.load_models(name , params, topics, tones)
         
         
     def load_models(self,robot, params, topics, tones=[]): 
@@ -182,9 +195,8 @@ class OllamaRF(object):
                                temperature=0.8,  
                                num_predict=19) 
 
-        else: 
-            arg = self.config.CHAT_PATH +  self.model_path  + "/" + params + ".base.csv"
-                
+        else:  
+            arg = self.config.CHAT_PATH +  self.model_path  + "/" + robot + ".base.csv" 
             with open(arg, 'r') as DictReader:  
                     in_data = csv.DictReader(DictReader, 
                                              delimiter=',', 
@@ -197,32 +209,32 @@ class OllamaRF(object):
                         prompts.append( (row["actor"], row["value"]) )  
 
             if len(topics) > 0: 
-
-                topic = ".".join(topics) 
-
+  
                 for topic in topics:
-
-                    arg = self.config.CHAT_PATH +  self.model_path  + "/" + params + "." + topic + ".csv"
+                    topic = "stuffed_animals"  
+                    arg = self.config.CHAT_PATH +  self.model_path  + "/" + robot + "." + topic + ".csv"
 
                     if os.path.exists(arg) is False: 
 
                         in_data = self.lt_memory.query(topic)
                         for row in in_data: 
-                             prompts.append( ("human", row["query"]) )  
-                             prompts.append( ("ai"   , row["response"]) )  
+                             prompts.append( ("human", self.input_cleanup(row["query"]) ))  
+                             prompts.append( ("ai"   , self.input_cleanup(row["response"])) )  
 
                     else:
                         with open(arg, 'r') as DictReader:  
                             in_data = csv.DictReader(DictReader, 
-                                                 delimiter=',', 
-                                                 quotechar =  '"',
-                                                 skipinitialspace=True,
-                                                 quoting=csv.QUOTE_ALL,
-                                                 doublequote = True)
+                                                     delimiter=',', 
+                                                     quotechar='"',
+                                                     skipinitialspace=True,
+                                                     quoting=csv.QUOTE_ALL,
+                                                     doublequote=True)
                        
                             for row in in_data: 
-                                prompts.append( (row["actor"], row["value"]) )  
-     
+                                prompts.append( (self.input_cleanup(row["actor"]), 
+                                                 self.input_cleanup(row["value"])) )  
+            print(prompts)
+          
             self.prompts = prompts  
             self.prompt = ChatPromptTemplate(self.prompts + self.prompts_end ) 
             self.model  = OllamaLLM(model="tinyllama", 
@@ -337,7 +349,7 @@ class OllamaRF(object):
                                              "situation":situation})
                                                # "lexicon":lexicon   }) 
               ai_response = self.parse_response(response)
- 
+              
           else:  
 
               _res =  [-1, "I dont understand", "Error"] 
@@ -345,10 +357,19 @@ class OllamaRF(object):
               all = []
               persona = self.persona
               _tone = f"who responds in a {tone} manner"  
-
+             # print(user_response)
               for i in range(self.llm_tries): 
-                   
-                  if i == self.llm_tries - 1:
+                  
+                  if i == 2:
+                       persona = ""
+
+                  if i == 3:
+                       situation = ""
+
+                  if i == 4:
+                       _tone  = "" 
+  
+                  if 3==4:#i == self.llm_tries - 1:
                       t_user_response = "Please provide a response on the followig topics:  " + ",".join(self.p_topics) +"."
                       response = self.chain_just_the_facts.invoke({"topic":t_user_response})
                       
@@ -360,9 +381,15 @@ class OllamaRF(object):
                                                       "situation":situation })#,
                                                      #"lexicon":lexicon   } )  
                   ai_response = self.parse_response(response)  
-
+              #    print(ai_response)
                   i_len_rsp = len(ai_response)
-                  adj   = 1/float(i_len_rsp)  
+                  adj   = 1/float(i_len_rsp)
+                  
+                  if i_len_rsp < self.min_resp_len : 
+                       ai_response = "I am not sure I am following what you said."  
+                       all.append([ai_response, response, -1])
+                       continue 
+                  
                   mx_src = -1  
                   
                   for topics in  [self.p_topics]: 
@@ -442,9 +469,10 @@ if __name__ == "__main__":
 
     st_mem     =  STMemory("squirrel", config, False)
     mem        =  LTMemory("squirrel", config, False) 
-    cognitive_control  = CognitiveControl("squirrel", config, {}, False) 
-    personality   = Personality("squirrel", config, {}, cognitive_control )
-    chat  = OllamaRF(config, cognitive_control , personality , mem , st_mem , "Number Two" , 'squirrel', [],  [] , True, repeat_log=False)
+    personality   = Personality("squirrel", config, {} )
+    cognitive_control  = CognitiveControl("squirrel", config, {}, personality,False) 
+    chat  = OllamaRF(config, cognitive_control , personality , mem , st_mem , 
+                     "Sqirrel" , 'squirrel', [],  [] , True, repeat_log=False)
   
     for user_input in [ "what pet do you like?" , 
                        "i live in san francisco.", 
