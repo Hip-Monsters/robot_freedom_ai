@@ -81,20 +81,9 @@ class Experience():
          f.write( json.dumps(self.words )  + "\n")   
 
    def strategy(self, objective, interval, last_moved, last_talked, mood ):
-       """   
-            self.tones =  {   'Diplomatic' : {"moods":[]} 
-                'Animated',    'Callous',   'Inspirational', 'Apologetic',
-                'Cautionary', 'Bitter', 'Belligerent', 'Appreciative', 'Assertive', 
-                'Accusatory', 'Amused', 'Admiring', 'Aggressive', 'Apathetic',
-                'Caustic', 'Thoughtful', 'Ardent', 'Acerbic', 'Benevolent', 'Absurd',
-                'Aggrieved', 'Altruistic', 'Witty', 'Direct', 
-                'Angry', 'Ambivalent', 'Candid', 'Informative', 'Arrogant', 'Appreciative.']
+       """    
     
-       """
-    #   print( interval , last_moved , last_talked )
-     #  print( self.reaction_threshold , self.movement_threshold , self.speach_threshold ) 
-     #  if interval < self.reaction_threshold :
-      #     return   "quiet"
+       """ 
            
        if last_moved <  self.movement_threshold: 
            return   "quiet"

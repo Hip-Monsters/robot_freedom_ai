@@ -293,7 +293,7 @@ class CognitiveControl(object):
       add_node(self.G, s_class) 
       for sense, reactions in self.stimuli_goal_factors.items():
               add_node(self.G, sense) 
-              add_edge(self.G,     s_class, sense, 1, prop )
+              add_edge(self.G,  s_class, sense, 1, prop )
               for reaction, wght in reactions.items():
                    add_node(self.G, reaction)
                    prop1 = {"class":s_class, "from": sense}
@@ -474,23 +474,61 @@ if __name__ == "__main__":
     personality    = Personality("squirrel" ,
                                  config,
                                  {} )
+    stimuli_class = "movement"
     t = CognitiveControl("squirrel", config, {},personality, False)
-
+    edges = [(u2,v2,e2) for u2,v2,e2  in [t.G.edges(v, data=True ) for u,v,e in t.G.edges("emotion_factors", data=True)  if v == stimuli_class  ][0] if e2["class"] == "emotion_factors"]
+ 
+    for es in t.G.edges(data=True ):
+        print (es)
+    
+    edges   = [((u2,v2),e2) for u2,v2,e2  in t.G.edges(data=True ) if "weight" in e2]
+ 
+    if 1==1: 
+       
+       import matplotlib.pyplot as plt
+      # pos = nx.forceatlas2_layout(t.G) #spring_layout(G)
+       edges,weights = zip(*nx.get_edge_attributes(t.G,'weight').items())
+       pos = nx.forceatlas2_layout(t.G) # nx.spring_layout(t.G)
+       nx.draw(t.G, pos, with_labels = False)  
+        
+       nx.draw(t.G, pos, node_color='b',
+                edgelist=edges, 
+                edge_color=weights, 
+                width=1.0, 
+                edge_cmap=plt.cm.Blues)
+       plt.savefig('edges.png')
+       
     if 1==1:
-      from pyvis.network import Network
-      pos = nx.forceatlas2_layout(t.G)
-      nx.draw(t.G, pos,with_labels = True)
-      #pos = nx.kamada_kawai_layout(t.G)
-      #nx.draw(t.G, pos,with_labels = True)
-      #nx.draw(t.G,with_labels = True)
-
+      from pyvis.network import Network 
       nt = Network('500px', '500px')
       nt.from_nx(t.G)
+      nt.repulsion()
       #nt.show_buttons(filter_=['physics'])
       nt.show('nx.html', notebook=False)
-    if 1==2:
-      from matplotlib import pyplot as plt
-      pos2 = nx.spring_layout(t.G)
-      nx.draw(t.G, pos2,  with_labels=True)
-      plt.title("Random Graph with Custom Node Colors and Sizes") 
-      plt.show() 
+ 
+    #https://stackoverflow.com/questions/13437284/animating-network-growth-with-networkx-and-matplotlib
+
+    if 2 == 3:
+        import pylab
+        from matplotlib.pyplot import pause
+        import networkx as nx
+        pylab.ion()
+        
+        G = t.G 
+     
+        edges,width = zip(*nx.get_edge_attributes(G,'width').items())
+        width = [wgt*10 for wgt in width]
+        def get_fig(): 
+            nx.draw(G, edge_color=width) #, pos=nx.get_node_attributes(graph,'Position')) 
+
+        pylab.show() 
+        pylab.draw()
+        pause(21) 
+    
+        num_plots = 50
+        for i in range(num_plots): 
+            #pylab.clf()
+            get_fig()
+            #pylab.cla()
+           # pylab.draw()
+            pause(2) 
