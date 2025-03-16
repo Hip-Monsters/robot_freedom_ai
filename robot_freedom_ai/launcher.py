@@ -168,7 +168,7 @@ class Launcher(object):
     def set_cmds(self  ):
         """
         """
-        self.commands["memcached"]         = {"cmd" : ["nohup memcached -l localhost  > ../RF_Data/logs/memcached.out"], "subp":-1}
+        self.commands["memcached"]         = {"cmd" : ["nohup memcached -l localhost  > ../data/logs/memcached.out"], "subp":-1}
         self.commands["server"]            = {"cmd" : ["python3", "ws_server.py"     ], "subp":-1, "delay": 1}
         self.commands["console"]           = {"cmd" : ["python3", "console.py", "-n " + str(self.networked)   ], "subp":-1}
         self.commands["http_server"]       = {"cmd" : ["python3", "http_server.py"], "subp":-1}
