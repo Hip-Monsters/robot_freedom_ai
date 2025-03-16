@@ -56,7 +56,7 @@ These experiences are weighted based on the outcome of the robot's actions allow
 
 First, download this repro and unzip it on your Desktop or projects folder. Then, open a terminal and navigate to robot_freedom_ai.
 
-Note: We perfer to not install robot_freedon_ai as a package because this project is primarily a teaching tool not production code. We want people to experiment and change the code on demand and package installations make this difficult.  
+Note: We prefer to not install robot_freedon_ai as a package because this project is primarily a teaching tool not production code. We want people to experiment and change the code on demand and package installations make this difficult.  
 
 The setup is slight different depending on whether you are using OSX, Windows or Linux. The code will run on degraded mode on most platforms but will only be fully functional on a RaspberryPi. 
 
@@ -115,7 +115,7 @@ pip install -r requirements.osx.txt
 
 ### Windows
  
-We have limted support for Windows. The core of the AI works as expected but the piper-ttk and GPIO is not supported.  
+We have limited support for Windows. The core of the AI works as expected but the piper-ttk and GPIO is not supported.  
 
 <a href="https://www.geeksforgeeks.org/how-to-install-memcached-on-windows/"> Here </a> is a great tutorial on installing memcache on Windows.
 
@@ -133,7 +133,7 @@ pip install -r requirements.win.txt
 
 ## Additional Setup
 
-Several external packages required for RobotFreedom.AI required addtion configuration and/or data. 
+Several external packages required for RobotFreedom.AI required addition configuration and/or data. 
 
 ### Ollama
 
@@ -144,7 +144,7 @@ test
 
 ### Vosk
 
-Vosk is a power voice to text AI that does remarkable well in loud settings (such as a workshop). This package enables out robots to hear. It is power by a pre-traied AI and you need to download a model for it to work. We use vosk-model-small-en-us-0.15 for most of our robots. 
+Vosk is a power voice to text AI that does remarkable well in loud settings (such as a workshop). This package enables out robots to hear. It is power by a pre-trained AI and you need to download a model for it to work. We use vosk-model-small-en-us-0.15 for most of our robots. 
  
 <a href="https://huggingface.co/rhasspy/vosk-models/resolve/main/en/vosk-model-small-en-us-0.15.zip"> Download from Hugging Face </a>
 
@@ -177,7 +177,7 @@ cd <your installation path>/robot_freedom_ai/data/chat/__default
 python convert.tone.py
 ```
 
-<a href="https://www.kaggle.com/datasets/projjal1/human-conversation-training-data"> Download from Kaggle</a> 
+<a href="https://www.kaggle.com/datasets/projjal1/human-conversation-training-data"> Download from Kaggle.com</a> 
  
 
 Move the downloaded files to: <your installation path>/robot_freedom_ai/data/chat/squirrel
@@ -191,7 +191,7 @@ python convert.chat.py
 
  - <a href="https://docs.arduino.cc/built-in-examples/sensors/Ping/">Ping Ultrasonic Range Finder</a>
  - <a href="https://docs.sunfounder.com/projects/umsk/en/latest/01_components_basic/12-component_pir_motion.html">PIR motion sensor ( HC-SR501 )</a>
- - <a href="https://store-usa.arduino.cc/products/grove-temperature-humidity-sensor-pro?srsltid=AfmBOoqjxlg_tPKlNdnZoDpeQ5KcJfDbbP8zvOXNB4jlBrv0Uq7mxU_5">Tempature/Humiddity Sensor</a>
+ - <a href="https://store-usa.arduino.cc/products/grove-temperature-humidity-sensor-pro?srsltid=AfmBOoqjxlg_tPKlNdnZoDpeQ5KcJfDbbP8zvOXNB4jlBrv0Uq7mxU_5">Temperature/Humidity Sensor</a>
  - <a href="https://newbiely.com/tutorials/raspberry-pi/raspberry-pi-touch-sensor#google_vignette">Touch Sensor</a>
  - <a href="https://www.raspberrypi.com/documentation/accessories/camera.html">RaspberryPi Camera.</a>
  -  USB A Mini Microphone 
@@ -199,7 +199,7 @@ python convert.chat.py
 
 ### Wiring 
 
-The sensors are connected directly to the RaspberryPi GPIO. The AI controls the robot's arms and legs using a Arudino connected via USB A. In the future we plan on adding the option for an Arudino to interface with the sensors.
+The sensors are connected directly to the RaspberryPi GPIO. The AI controls the robot's arms and legs using a Arduino connected via USB A. In the future we plan on adding the option for an Arduino to interface with the sensors.
  
 ## GPIO
 
@@ -207,9 +207,9 @@ Below is the layout for the sensors:
 
 <img src="./robot_freedom_ai/assets/Sensors.2_bb.png" width="220">  
 
-### Arudino 
+### Arduino 
 
-The code for the Arudio is in GitHub <a href="https://github.com/Hip-Monsters/robot_freedom_motion_control/tree/main">here</a>.  
+The code for the Arduino is in GitHub <a href="https://github.com/Hip-Monsters/robot_freedom_motion_control/tree/main">here</a>.  
 
 The layout is shown below.
 
@@ -243,7 +243,7 @@ python voice_test.py
 
 ## Older RaspberryPi
  
-Ollama does not run or performs too slowly on RapsberryPi < 4. To run on older RaspberryPis, we recommend setting the config to low energy mode.
+Ollama does not run or performs too slowly on RaspberryPi < 4. To run on older RaspberryPis, we recommend setting the config to low energy mode.
 
 ```bash
 nano ./data/config/config.json 
@@ -322,7 +322,7 @@ You should see something like this:
 
 ```
 
-Add in the following command at the end of the file then save (cntr o).
+Add in the following command at the end of the file then save (cntrl o).
 
 ```
 @lxterminal -e /home/pi/Desktop/robot_freedom_ai/robot_freedom_ai/quick_start.sh
