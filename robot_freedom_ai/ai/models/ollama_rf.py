@@ -210,8 +210,7 @@ class OllamaRF(object):
 
             if len(topics) > 0: 
   
-                for topic in topics:
-                    topic = "stuffed_animals"  
+                for topic in topics: 
                     arg = self.config.CHAT_PATH +  self.model_path  + "/" + robot + "." + topic + ".csv"
 
                     if os.path.exists(arg) is False: 
