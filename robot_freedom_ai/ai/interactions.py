@@ -226,7 +226,7 @@ class Interactions(object):
            i_max = len(self.chat["initiate"][strategy]) -1 
            i_index = random.randint(0, i_max) 
            init_response  = self.chat["initiate"][strategy][i_index]["response"]
-           response["speech"] = init_response  
+           response["speech"] = [init_response ] 
            
        i_max = len(self.movement[objective]) -1
        i_index = random.randint(0,i_max)
