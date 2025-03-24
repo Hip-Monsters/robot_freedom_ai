@@ -106,14 +106,15 @@ class LTMemory(object):
  
  
         convo_init_file = self.config.CHAT_PATH + self.facts_path + "/chat.initiate.json"
-
+        mapped_tones = set([])
         with open(convo_init_file) as f:  
              for data in f:  
                 try:
                     row = json.loads(data.strip())
                 
                     if row["tone"] not in self.memory["initiate"]:
-                         self.memory["initiate"][row["tone"]] = []
+                         self.memory["initiate"][row["tone"]] = [] 
+                         mapped_tones.add(row["tone"])
   
                     if self.low_memory_mode:
                         if len(self.memory["initiate"][row["tone"]]) >= 10:
@@ -121,9 +122,17 @@ class LTMemory(object):
                     self.memory["initiate"][row["tone"]].append(row) 
                 except:
                      print("\r Row error",  data.strip(), end = "")
-        
+        print(mapped_tones)
         self.load_models()
-
+        """
+        TODO Add love
+        {'Appreciative', 'Assertive', 'Inspirational', 'Amused', 'Bitter', 'Acerbic',
+          'Aggrieved', 'Appreciative.', 'Animated', 'Altruistic', 'Callous', 'Apologetic', 
+          'Candid', 'Benevolent', 'Direct', 'Witty', 'Cautionary', 'Ardent', 'Thoughtful', 
+          'Absurd', 'Admiring', 'Angry', 'Diplomatic', 'Aggressive',
+          'Arrogant', 'Caustic', 'Ambivalent', 'Belligerent', 'Apathetic', 'Informative', 'Accusatory'}
+        add love
+        """
         return None
     
     def build_models_conversations(self):
@@ -281,6 +290,11 @@ class LTMemory(object):
         ## Todo Create a tone adjuster for tone- change words? add in a snarky or friendly end?
         return response
     
+    def respond(self,  user_response, mood, tone, topics, objective, lexicon):
+        return self.response(user_response, mood, 
+                             tone, topics, objective, lexicon) 
+
+
     def response(self, user_response, mood, tone, topics, objective, lexicon):
       """
       """  
