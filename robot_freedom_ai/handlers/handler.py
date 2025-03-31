@@ -1,26 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Description: The agent daemon that allows the Artifical Intelligence to process sensors signals and control the robot.
-Author: Mood_Relate.org 
-Date Created: Jan 1, 2023
-Date Modified: Oct 10, 2024
-Version: 4.0
-Plaftorm: RaspberryPi
-License: MIT License 
-"""
-import json
-import sys  
-import csv
-import datetime  
-import time  
-
-####    Libraries   ################
- 
- 
-import argparse
-
-parser = argparse.ArgumentParser() 
-
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
+""" 
+Author: HipMonsters.com  
+License: MIT License  
+"""   
+import sys 
 sys.path.append("..")
 from  errors import  handle_exceptions
  

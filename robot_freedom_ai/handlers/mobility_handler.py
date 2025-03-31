@@ -1,3 +1,9 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
+""" 
+Author: HipMonsters.com  
+License: MIT License  
+""" 
 import time
 from . handler import Handler, handle_exceptions
 

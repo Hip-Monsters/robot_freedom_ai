@@ -1,6 +1,10 @@
-import time
-from . handler import Handler, handle_exceptions
-
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
+""" 
+Author: HipMonsters.com  
+License: MIT License  
+"""  
+from . handler import Handler, handle_exceptions 
 import datetime 
 
 class MemoryHandler(Handler): 
