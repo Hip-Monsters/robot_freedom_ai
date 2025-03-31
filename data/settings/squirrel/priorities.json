@@ -1,8 +1,8 @@
 {
     "name": "Squirrel",
     "priorities": {
-        "enguagement": 0.7,
-        "novelity": 0.8,
+        "engagement": 0.7,
+        "novelty": 0.8,
         "acquisition": 1.0,
         "creating": 0.1,
         "processing": 0.4

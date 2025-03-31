@@ -1,17 +1,17 @@
 {
     "name": "Squirrel",
     "traits": {
-        "socialability": 0.7,
+        "sociability": 0.7,
         "emotional_stability": 1.0,
         "kindness": 0.2,
         "thoughtfulness": -0.2,
         "openness": 0.6
     },
     "discount": 0.7,
-    "forgetfullness": 0.8,
+    "forgetfulness": 0.8,
     "defaults": {
         "mood": "happy",
-        "objective": "enguagement",
+        "objective": "engagement",
         "strategy": "Thoughtful"
     }
 }
