@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
   
 """
 Description: This builds and controls a simple chatbot design to run on a RaspberryPi.
@@ -6,7 +7,7 @@ Author: HipMonsters.com
 Date Created: Jan 1, 2021
 Date Modified: Oct 10, 2024
 Version: 8.0
-Plaftorm: RaspberryPi
+Platform: RaspberryPi
 License: MIT License  
 """ 
 import glob
@@ -316,7 +317,7 @@ class LTMemory(object):
 
       resp1 = self._get_top_responses("personality" , user_response)
       resp2 = self._get_top_responses("facts"       , user_response)
-      # randomize should be in a nother call 
+      # randomize should be in another call 
       if resp1[-1] >= resp2[-1]:
           return self.add_tone(resp1[-1][0], tone)
       else: 
@@ -332,7 +333,7 @@ if __name__ == "__main__":
     import config
 
     topics = ["cats"]
-    objective = "Enguage"
+    objective = "engage"
     mood = "happy"
     tone ="friendly"
     lexicon = "simple"
