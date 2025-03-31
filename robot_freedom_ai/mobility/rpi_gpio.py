@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
-  
-"""
-Description: The age 
-Notes: Set up two motors:
-       pins: 17 & 22 Right motors
-       pins: 24 & 23 Left motors
-"""
+   
 import datetime
 import time
 import random
@@ -39,7 +33,7 @@ class MOBILITY_GPIO(object):
     
     def __init__(self, nerves): 
         """
-        Tells the RaspberryPi the ports are for outputing commands
+         
         """  
 
         self.nerves     = nerves

@@ -12,14 +12,14 @@ MAPS = {}
 """ 
   if (msg == "q")   Serial.print("Lift Left Arm");  
   else if (msg == "a")   Serial.print("Lower Left Arm"); 
-  else if (msg == "w")  Serial.print("Flex Left Bicept"); 
-  else if (msg == "s")  Serial.print("Relax Left Bicept"); 
+  else if (msg == "w")  Serial.print("Flex Left Biceps"); 
+  else if (msg == "s")  Serial.print("Relax Left Biceps"); 
   else if (msg == "e")   Serial.print("Open Left Hand"); 
   else if (msg == "d")   Serial.print("Close Left Hand"); 
   else if (msg == "t")   Serial.print("Lift Right Arm"); 
   else if (msg == "g")   Serial.print("Lower Right Arm"); 
-  else if (msg == "y")   Serial.print("Flex Right Bicept"); 
-  else if (msg == "h")   Serial.print("Relax Right Bicept"); 
+  else if (msg == "y")   Serial.print("Flex Right Biceps"); 
+  else if (msg == "h")   Serial.print("Relax Right Biceps"); 
   else if (msg == "u")   Serial.print("Open Right Hand"); 
   else if (msg == "j")   Serial.print("Close Right Hand"); 
   else if (msg == "i")   Serial.print("Open Right Hand"); 
@@ -136,16 +136,16 @@ FLIPS['l'] = 'o'
 CMDS       = {} 
 CMDS['q']  = {"side": "left" , "part" : "shoulder"}
 CMDS['a']  = {"side": "left" , "part" : "shoulder"}
-CMDS['w']  = {"side": "left" , "part" : "bicept"}
-CMDS['s']  = {"side": "left" , "part" : "bicept"}
+CMDS['w']  = {"side": "left" , "part" : "Biceps"}
+CMDS['s']  = {"side": "left" , "part" : "Biceps"}
 CMDS['e']  = {"side": "left" , "part" : "hand"}
 CMDS['d']  = {"side": "left" , "part" : "hand"}
 #CMDS['r']  = {"side": "left" , "part" : ""}
 #CMDS['f']  = {"side": "left" , "part" : " "}
 CMDS['t']  = {"side": "right" , "part" : "shoulder"}
 CMDS['g']  = {"side": "right" , "part" : "shoulder"}
-CMDS['y']  = {"side": "right" , "part" : "bicept"}
-CMDS['h']  = {"side": "right" , "part" : "bicept"}
+CMDS['y']  = {"side": "right" , "part" : "Biceps"}
+CMDS['h']  = {"side": "right" , "part" : "Biceps"}
 CMDS['u']  = {"side": "right" , "part" : "hand"}
 CMDS['j']  = {"side": "right" , "part" : "hand"}
 #CMDS['i']  = {"side": "right" , "part" : " "}
@@ -291,16 +291,14 @@ def sequences(sequence, current_states):
                  return ['l3']  , {}
             elif sequence['side'] == "yellow":
                  return ['l4'] , {}
-            
-     # elif  sequence['part'] = "body":
-     #add in moveing
-     #adding system command like rest
+             
+     #TODO system command like rest
      else:
          try:
              cmds = SEQ[sequence['part']][sequence['action'] ][sequence['side']]  
 
          except:
-             print('Sequence mssing', sequences) 
+             print('Sequence missing', sequences) 
              t = open( './seq.error.log', 'a')
              t.write(str(sequence) + "\n")
              cmds  = rand_sequence(current_states)    
