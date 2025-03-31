@@ -1,6 +1,11 @@
-"""
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
 
 """
+Description:  
+Author: HipMonsters.com 
+License: MIT License
+""" 
 import os  
 import json
   
@@ -8,7 +13,7 @@ import json
 traits_lookup =   {"AGR": "kindness",
                    "EST": "emotional_stability",
                    "OPN": "openness",
-                   "EXT": "socialability",
+                   "EXT": "scalability",
                    "CSN": "thoughtfulness" 
              }
 
@@ -38,14 +43,13 @@ def gen_interactions(sname, outfolder):
      emotion_factors["sense"]["quiet"]     = {"sad":   .5, "surprised":  -1 , "bored":    1   , "fear":   0 ,  "happy":  -.1  , "disgust":   .05   }
      emotion_factors["sense"]["movement"]  = {"sad":    0, "surprised":  .5 , "bored":  -.1  , "fear":  .05 , "happy":    0   , "disgust":  -.05   }
      emotion_factors["sense"]["distance"]  = {"sad":   .5, "surprised":  -.5, "bored":  -.1  , "fear": -.05 , "happy":   .1   , "disgust":  -.05   }
-     emotion_factors["sense"]["tempature"] = {"sad":  -.5, "bored":      .5 }
+     emotion_factors["sense"]["temperature"] = {"sad":  -.5, "bored":      .5 }
      emotion_factors["sense"]["humidity"]  = {"sad":  -.5, "bored":      .5 }
      emotion_factors["sense"]["touch"]     = {"sad":  -.5, "bored":      .5 }
-     emotion_factors["sense"]["balence"]   = {"sad":  -.5, "surprised":  .5 , "bored":  .05 }
+     emotion_factors["sense"]["balance"]   = {"sad":  -.5, "surprised":  .5 , "bored":  .05 }
      emotion_factors["sense"]["light"]     = {"sad":  -.5, "bored":      .5 }
-
-      
-     print("have a tool to do global adjument of emotion_factors")
+ 
+     print("have a tool to do global adjustment of emotion_factors")
      for question in ["sad", "surprised", "bored", "happy", "fear", "disgust"]: 
            print("Does the robot quickly feel "  + question + " (yes, no, average) or (y,n,a) ?") 
 
@@ -76,22 +80,22 @@ def gen_interactions(sname, outfolder):
      final["emotions"] = {}
      final["emotions"]["emotion_factors"] = emotion_factors 
      #from experience
-     objective_2_strategy  =  { "enguagement" :   {"tones" : ['Absurd', 'Witty', 'Amused'] }, 
+     objective_2_strategy  =  { "engagement" :   {"tones" : ['Absurd', 'Witty', 'Amused'] }, 
                            "defuse" :   {"tones" : ['Appreciative', 'Admiring']}, 
                            "inspire":   {"tones" : ['Inspirational', 'Informative', 'Thoughtful'] }, 
-                           "disenguagement": {"tones" : ['Diplomatic']},
+                           "disengagement": {"tones" : ['Diplomatic']},
                            "relax"  :   {"tones" : ['Altruistic', 'Benevolent']},
                           } 
     
      final["experience"] = {}
      final["experience"]["goal"] = objective_2_strategy 
      #from motivations
-    # should be pulled from kwoledge base
-     objectives = {"enguagement":     {"mood": ["happy", "sad"]    , "met" :["creating", "processing"], "unmet":["acquisition"]  }, 
-                          "disenguagement":  {"mood": ["disgust"]    , "met" :["acquisition"], "unmet":["creating", "processing"]  }, 
-                          "defuse":     {"mood": ["fear","anger"], "met" :["enguagement"], "unmet":["angry"]  }, 
-                          "relax":      {"mood": ["surprise"]    , "met" :["enguagement"], "unmet":["angry"]  }, 
-                          "inspire":    {"mood": ["bored"]    , "met" :["enguagement"], "unmet":["novelity"]  }, 
+    # should be pulled from knowledge base
+     objectives = {"engagement":     {"mood": ["happy", "sad"]    , "met" :["creating", "processing"], "unmet":["acquisition"]  }, 
+                          "disengagement":  {"mood": ["disgust"]    , "met" :["acquisition"], "unmet":["creating", "processing"]  }, 
+                          "defuse":     {"mood": ["fear","anger"], "met" :["engagement"], "unmet":["angry"]  }, 
+                          "relax":      {"mood": ["surprise"]    , "met" :["engagement"], "unmet":["angry"]  }, 
+                          "inspire":    {"mood": ["bored"]    , "met" :["engagement"], "unmet":["novelty"]  }, 
                           } 
      
  
@@ -156,8 +160,8 @@ def gen_priorities(sname, outfolder):
      
      """
      final = { "name": sname, 
-              "priorities" : {"enguagement": 1,
-              "novelity": 0.5,
+              "priorities" : {"engagement": 1,
+              "novelty ": 0.5,
               "acquisition": 0.5,
               "creating": 0.5,
               "processing" : 0.5
@@ -247,9 +251,9 @@ def generate_personality(sname, outfolder):
        final["traits"][val] =  final["traits"][val] / 10.0
 
    final["discount"]       = 0.5  
-   final["forgetfullness"] = 0.1 
+   final["forgetfulness"] = 0.1 
 
-   for trait in ["discount", "forgetfullness"]:
+   for trait in ["discount", "forgetfulness"]:
        print("What is the robot's " + trait + " level (1 to 10)?")
        while True:
            val = input()  
@@ -269,7 +273,7 @@ def generate_personality(sname, outfolder):
            
 
    final["defaults"] = {"mood":"happy", 
-                "objective":"enguagement", 
+                "objective":"engagement", 
                 "strategy":"Thoughtful"  
                }
        
