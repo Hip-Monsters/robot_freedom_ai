@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Description: The agent daemon that allows the Artifical Intelligence to process sensors signals and control the robot.
-Author: Mood_Relate.org 
+Description: The agent daemon that allows the Artificial Intelligence to process sensors signals and control the robot.
+Author: HipMonsters.com 
 Date Created: Jan 1, 2023
 Date Modified: Oct 10, 2024
 Version: 4.0
-Plaftorm: RaspberryPi
+Platform: RaspberryPi
 License: MIT License 
-"""
-import json
-import sys  
-import csv
+""" 
+import sys   
 import datetime  
 import time  
 from .protocol import Protocol
@@ -78,10 +76,10 @@ class Monitor(Protocol):
                      continue
                      
 
-                elif commands.find("annoucement") > -1:  
+                elif commands.find("announcement") > -1:  
                      continue
                 else:
-                    print("UNKOWEN COMMAND", commands)
+                    print("UNKOWN COMMAND", commands)
         
             detect, commands = self.nerves.pop("remote_cmd") 
             if detect:
@@ -95,7 +93,7 @@ class Monitor(Protocol):
                monitor_sense = ["distance", "movement"] 
 
             elif self.movement:
-               monitor_sense = ["distance", "movement", "balence"] 
+               monitor_sense = ["distance", "movement", "balance"] 
                
             else:
                monitor_sense =  self.behavior.cognitive_control.sense_types["physical"].keys()
@@ -103,7 +101,7 @@ class Monitor(Protocol):
             for sense in  monitor_sense:
   
                 if sense == "quiet": 
-                    dur = self.current_cycle - self.last_stimui 
+                    dur = self.current_cycle - self.last_stimuli 
                     if dur.total_seconds() > self.quiet_in_secs :
                         detect,  amplitude = True, .10* dur.total_seconds()  
                         i_quiet += 1
