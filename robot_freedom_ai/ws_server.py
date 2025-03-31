@@ -6,7 +6,7 @@ Author: HipMonsters.com
 Date Created: Jan 1, 2022
 Date Modified: Oct 10, 2024
 Version: 1.9
-Plaftorm: RaspberryPi
+Platform: RaspberryPi
 License: MIT License
 """
 
@@ -30,8 +30,8 @@ IPAddr = get_local_ip()
 print("Your Computer IP Address is:" + IPAddr)
 
 # Create a socket
-# socket.AF_INET - address family, IPv4, some otehr possible are AF_INET6, AF_BLUETOOTH, AF_UNIX
-# socket.SOCK_STREAM - TCP, conection-based, socket.SOCK_DGRAM - UDP, connectionless, datagrams, socket.SOCK_RAW - raw IP packets
+# socket.AF_INET - address family, IPv4, some other possible are AF_INET6, AF_BLUETOOTH, AF_UNIX
+# socket.SOCK_STREAM - TCP, connection-based, socket.SOCK_DGRAM - UDP, connectionless, datagrams, socket.SOCK_RAW - raw IP packets
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # SO_ - socket option

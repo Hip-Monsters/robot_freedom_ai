@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Description: The agent daemon that allows the Artifical Intelligence to process sensors signals and control the robot.
+Description: The agent daemon that allows the Artificial Intelligence to process sensors signals and control the robot.
 Author: Mood_Relate.org 
 Date Created: Jan 1, 2023
 Date Modified: Oct 10, 2024
 Version: 4.0
-Plaftorm: RaspberryPi
+Platform: RaspberryPi
 License: MIT License 
 """
 import json 
@@ -130,7 +130,7 @@ class AIAgent(object):
                 self.communication = self.nerves
  
     
-        print("\r Initializing Controler ...."  + self._space , end="")
+        print("\r Initializing Controller ...."  + self._space , end="")
         self.mobility    =  MOBILITY(self.robot)    
  
         print("\r Initializing Camera..  "  + self._space , end="" ) 

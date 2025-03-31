@@ -3,8 +3,7 @@
 Description: This script spawns sensors daemons and monitors the cpu usage.
 Author: HipMonsters.com
 Date Created: Jan 1, 2023
-Date Modified: Oct 10, 2024   
-pip install pystray
+Date Modified: Oct 10, 2024    
 """    
 import os
 import json
@@ -187,7 +186,7 @@ class Launcher(object):
         self.commands["sense.distance"]          = {"cmd" : ["python3", "daemon.py", "-m senses.distance", "-c Distance","-r " + self.robot ], "subp":-1}  
         self.commands["sense.sound"]             = {"cmd" : ["python3", "daemon.py", "-m senses.sound", "-c Sound","-r " + self.robot ], "subp":-1} 
         self.commands["sense.speech"]            = {"cmd" : ["python3", "daemon.py", "-m senses.speech", "-c Speech","-r " + self.robot ], "subp":-1} 
-        self.commands["sense.tempature_humidity"]= {"cmd" : ["python3", "daemon.py", "-m senses.tempature_humidity", "-c TempatureHumidity" ,"-r " + self.robot  ], "subp":-1} 
+        self.commands["sense.temperature_humidity"]= {"cmd" : ["python3", "daemon.py", "-m senses.temperature_humidity", "-c temperatureHumidity" ,"-r " + self.robot  ], "subp":-1} 
         self.commands["sense.light"]             = {"cmd" : ["python3", "daemon.py", "-m senses.light","-c Light" ,"-r " + self.robot ], "subp":-1}
         self.my_env = os.environ.copy() 
         self.my_env["PATH"] = f"/usr/sbin:/sbin:{self.my_env['PATH']}:" + self.wdir   
@@ -452,12 +451,12 @@ class Launcher(object):
 
         print(logo())  
         print("Robot's IP Address  :"    + self.local_ip) 
-        print("Sensors             :"    +  " ".join(["voice","noise", "movement","distance","balence"]) ) 
+        print("Sensors             :"    +  " ".join(["voice","noise", "movement","distance","balance"]) ) 
         print("Components          :"    +  " ".join(["speech","device_contol","communication","mic", "camera"])  ) 
         print("AI Modules          :"    +  " ".join(["chat", "cognitive_control", "emotions", "motivations", "personality", "dream_inducer", "strategies" ])  ) 
         print("AI Learner          :"    +  " ".join(["gradient_descent", "BERT", "cosine_similarity","ANN" ]) ) 
         print("Security Modules    :"    +  " ".join(["firewall", "security", "cmd_filters", "threat_scores"]) ) 
-        print("AI Ethics Modules   :"    +  " ".join(["asimovs_3_laws", "strategy_inhibitor", "stimuli_mitigation"]) )
+        print("AI Ethics Modules   :"    +  " ".join(["strategy_inhibitor", "stimuli_mitigation"]) )
         print("Welcome " + self.robot   )
 
         from communication.http_server import HTTPServer

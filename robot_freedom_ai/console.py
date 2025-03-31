@@ -7,7 +7,7 @@ Author: HipMonsters.com
 Date Created: Jan 1, 2023
 Date Modified: Oct 10, 2024
 Version: .7
-Plaftorm: RaspberryPi
+Platform: RaspberryPi
 License: MIT License  
 """
 

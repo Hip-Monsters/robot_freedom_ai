@@ -18,8 +18,9 @@ def handle_exceptions(f):
             print(args)
             print(kw)
             print(traceback.format_exc()) 
-            print("END ERROR ") 
-            cvcvcvcvcv
+            print("END ERROR ")  
+            raise
+            stop
             #exception_handler(self.log, True)
 
     return wrapper 

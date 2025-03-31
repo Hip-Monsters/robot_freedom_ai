@@ -5,7 +5,7 @@ Author: HipMonsters.com
 Date Created: Jan 1, 2021
 Date Modified: Oct 10, 2024
 Version: 8.0
-Plaftorm: RaspberryPi
+Platform: RaspberryPi
 License: MIT License  
 """
   
