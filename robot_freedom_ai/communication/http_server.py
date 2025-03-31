@@ -1,7 +1,10 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-  
 """
- Implements a simple HTTP/1.0 Server  
-""" 
-import os
+Description: Implements a simple HTTP/1.0 Server  
+Author: HipMonsters.com 
+License: MIT License
+"""  
 import time
 import datetime 
 import shutil
@@ -12,8 +15,7 @@ from .client        import Client
 from .base_cmds     import BaseCmds
 from .nerves        import Nerves 
 from .network       import get_local_ip
-import json
-import psutil, subprocess, sys
+import json 
 import config 
 
 class HTMLFilter(HTMLParser):

@@ -1,8 +1,15 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
+
+"""
+Description:  
+Author: HipMonsters.com 
+License: MIT License
+""" 
 
 import subprocess
 import urllib.request
-import socket 
-import re 
+import socket  
 import os
 
 def check_ips_role(ip, role):
@@ -106,8 +113,8 @@ def map_rf_ips(b_stop_on_hub=True):
     devices["robots"]  = {}
     devices["hubs"]    = {}
     devices["repositories"] = {}
-    b_repositoy = False
-    b_hub       = False
+    b_repository = False
+    b_hub        = False
     for i in range(1, 255):
         ip = base_ip + '{0}'.format(i)
         print(ip)
@@ -127,13 +134,13 @@ def map_rf_ips(b_stop_on_hub=True):
 
         elif contents.startswith("repository:"):
             devices["repositories"][ip]  = contents.split(":")[1] 
-            b_repositoy = True
+            b_repository = True
 
         if b_stop_on_hub :
             if b_hub:
                 break
         else :
-            if b_hub and b_repositoy:
+            if b_hub and b_repository:
                 break
 
 

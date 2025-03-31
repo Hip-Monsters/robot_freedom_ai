@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
-  
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
 """
 Description: Memcache client for daemons and agent.
 Author: HipMonsters.com 
@@ -121,7 +121,7 @@ class Client(object):
         check_for_a_message("number2", "step 1 done?", "yes")
 
         """  
-        b_annouced = False
+        b_announced = False
         b_connected = self.check_connection()
       
         if b_connected: 
@@ -148,22 +148,22 @@ class Client(object):
                     to, reply  = parts[1].split(">") 
                     if sent_from.upper() == "ANYONE":
                         if reply == expected_reply and to == recipient:
-                             b_annouced = True 
+                             b_announced = True 
 
                     elif   to.upper()  == "ANYONE":
-                             b_annouced = True 
+                             b_announced = True 
                     else:
                         if reply == expected_reply and to == recipient and username == sent_from :
-                             b_annouced = True 
+                             b_announced = True 
         
             except IOError as e:
                 if e.errno != errno.EAGAIN and e.errno != errno.EWOULDBLOCK:
                     print('Reading error: {}'.format(str(e))) 
-                    b_annouced = False  
+                    b_announced = False  
         else:
             print("\nNOT CONNECTED TO SERVER\n")
 
-        return  b_annouced
+        return  b_announced
         
     def check_messages(self):
         """ 
@@ -198,7 +198,7 @@ class Client(object):
                     parts  = message.split("@")
                     to, reply  = parts[1].split(">")  
 
-                    if to.lower() == "annoucement": 
+                    if to.lower() == "announcement": 
                         b_new_messages = True 
                         message = reply
 
@@ -262,11 +262,7 @@ class Client(object):
  
         
             except IOError as e:
-                # This is normal on non blocking connections - when there are no incoming data error is going to be raised
-                # Some operating systems will indicate that using AGAIN, and some using WOULDBLOCK error code
-                # We are going to check for both - if one of them - that's expected, means no incoming data, continue as normal
-                # If we got different error code - something happened
-                if e.errno != errno.EAGAIN and e.errno != errno.EWOULDBLOCK:
+                   if e.errno != errno.EAGAIN and e.errno != errno.EWOULDBLOCK:
                     print('Reading error: {}'.format(str(e))) 
                     b_new_messages = False 
          
@@ -347,7 +343,7 @@ class Client(object):
 
 if __name__ == "__main__":
     print("Creating a connection socket and start listening to the clients")
-    comd = Communication("test", "192.168.1.4")
+    comd = Client("test", "192.168.1.4")
     comd.connect()
     while comd.check_connection() == False:
         print("Waiting ....")

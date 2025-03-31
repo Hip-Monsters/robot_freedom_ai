@@ -1,14 +1,9 @@
-# -*- coding: utf-8 -*-
-#!/usr/bin/env python
-"""
-Description: Console for monitoring daemons and agents.
-Author: HipMonsters.com 
-Date Created: Jan 1, 2023
-Date Modified: Oct 10, 2024
-Version: .7
-Plaftorm: RaspberryPi
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
+""" 
+Author: HipMonsters.com  
 License: MIT License  
-"""
+""" 
 
 import random  
 import time 
@@ -292,7 +287,7 @@ if __name__ == '__main__':
      """
      
      """
-     cmds = RobotFreedomCmds("user", "remote") 
+     cmds = BaseCmds("user", "remote") 
 
 
     

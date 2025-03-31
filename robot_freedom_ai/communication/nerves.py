@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
-  
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
+
 """
 Description: Interface for Nerves (memcache) to connect components to agent(s).
 Author: HipMonsters.com 
 License: MIT License
 """ 
-
-import sys  
+ 
 from os import system   
 from pymemcache.client import base
 import json
@@ -24,6 +24,7 @@ class Nerves(object):
            self.ip =  ip
         
         self.port = 11211
+        print((self.ip, self.port))
         self.client = base.Client((self.ip, self.port))
         self.client.set('log', json.dumps({}) ) 
  

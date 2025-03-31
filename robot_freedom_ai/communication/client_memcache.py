@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-  
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
+
 """
 Description: Interface for Communication (memcache) to connect components to agent(s).
 Author: HipMonsters.com 
 License: MIT License
-""" 
-
-import sys  
+"""  
 from os import system   
 import time
 from pymemcache.client import base

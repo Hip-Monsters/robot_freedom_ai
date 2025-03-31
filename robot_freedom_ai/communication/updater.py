@@ -1,5 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
+
 """
-"""
+Description:  
+Author: HipMonsters.com 
+License: MIT License
+""" 
 
 import os  
 
