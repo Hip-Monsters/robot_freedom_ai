@@ -48,11 +48,11 @@ class Interactions(object):
    def get_stimuli_summary(self,  behavior):
        """
 
-       """ 
-
+       """  
        stimuli = {}
        for dt , details in behavior.st_memory.memory["stimuli"].items():
-           stim =   details["stimuli"]
+           stim =   details["stimuli_class"]
+
            if stim not in  stimuli:
                stimuli[stim ] = 1
            else:
@@ -73,14 +73,17 @@ class Interactions(object):
             elif template["source"] =="stimuli":
                resp = template["template"]
                stimuli = self.get_stimuli_summary(behavior)
+               _len = len(stimuli) -1
+               _int = random.randint(0, _len)
+               stim = list(stimuli.keys())[_int]
+               cnt  =  stimuli[stim]
                resp1 = " I experienced "
-               for stim, cnt in stimuli.items():
-                   resp1 +=  stim + " " + str(cnt) + " times today, "
+               resp1 +=  stim + " " + str(cnt) + " times today, " 
                response  = [resp.replace("<INSERT>", resp1 ) ]
 
             return response
    
-   def responses(self, topic, catogory, prompt,  behavior, interactive, get_chat_response):
+   def responses(self, topic, category, prompt,  behavior, interactive, get_chat_response):
        """ 
 
        """ 
@@ -90,11 +93,11 @@ class Interactions(object):
        strategy  = behavior.strategy  
        result = {}
        result["topic"]          =  topic 
-       result["catogory"]       =  catogory     
-       result["stimui"]         =  behavior.stimui       
+       result["category"]       =  category     
+       result["stimuli"]        =  behavior.stimuli_type       
        result["stimuli_class"]  =  behavior.stimuli_class
        result["amplitude"]      =  behavior.amplitude   
-       result["stimui_time"]    =  behavior.stimui_time  
+       result["stimuli_time"]   =  behavior.stimuli_time  
        result["scrs"]           =  behavior.scrs 
        result["scr"]            =  behavior.scr   
        result["met"]            =  behavior.met  
@@ -102,13 +105,13 @@ class Interactions(object):
        result["indif"]          =  behavior.indif   
        result["mood"]           =  behavior.mood   
        result["objective"]      =  behavior.objective    
-       result["strategyv"]      =  behavior.strategy    
-       result["stimui_time"]    = str(behavior.stimui_time) 
+       result["strategy"]       =  behavior.strategy    
+       result["stimuli_time"]   = str(behavior.stimuli_time) 
 
        if self.b_llm:
-           response = self.__responses_llm(topic, catogory, prompt,  behavior, interactive, get_chat_response)
+           response = self.__responses_llm(topic, category, prompt,  behavior, interactive, get_chat_response)
        else:
-           response = self.__responses_csim(topic, catogory, prompt,  behavior, interactive, get_chat_response)
+           response = self.__responses_csim(topic, category, prompt,  behavior, interactive, get_chat_response)
        
        if len(response["speech"]) > 0 or  len(response["movement"]) > 0:
            result["prompt"]         = prompt
@@ -118,7 +121,7 @@ class Interactions(object):
 
        return response    
    
-   def __responses_llm(self, topics, catogory, prompt,  behavior, interactive, get_chat_response):
+   def __responses_llm(self, topics, category, prompt,  behavior, interactive, get_chat_response):
        """
        
        """
@@ -167,10 +170,8 @@ class Interactions(object):
               i_max = len(self.chat["initiate"][strategy]) - 1  
               i_index = random.randint(0, i_max) 
               init_response  = self.chat["initiate"][strategy][i_index]["response"]
-             # prompt  = init_response[0]  
-            #  resp = get_chat_response(prompt)   
-              #resp = [resp]
-              resp = init_response
+           
+              resp = [init_response]
            else:     
               i_max = len(self.set_chat_responses["queries"].keys()) - 1   
               i_index = random.randint(0, i_max) 
@@ -187,7 +188,7 @@ class Interactions(object):
 
        return  response
    
-   def __responses_csim(self, topics, catogory, prompt,  behavior, chat, get_chat_response):
+   def __responses_csim(self, topics, category, prompt,  behavior, chat, get_chat_response):
        """
        
        """

@@ -6,7 +6,7 @@ Author: HipMonsters.com
 Date Created: Jan 1, 2023
 Date Modified: Oct 10, 2024
 Version: 6.0
-Plaftorm: RaspberryPi  
+Platform: RaspberryPi  
 License: MIT License  
  
 The S-O-R model suggests that an organism’s internal feelings or Behavior (person) 

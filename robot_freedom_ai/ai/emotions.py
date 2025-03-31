@@ -16,7 +16,7 @@ class Emotions():
        self.robot        = robot  
        self.personality = personality
        self.discount    = personality.discount
-       self.novelity    = 1 - self.discount 
+       self.novelty     = 1 - self.discount 
        self.moods       = moods 
 
        self.cognitive_control   = cognitive_control
@@ -26,20 +26,21 @@ class Emotions():
        self.emotion_factors =  self.cognitive_control.emotion_factors
        self.emotion_flip    =  self.cognitive_control.emotion_flip
 
-   def save(self , stimui_time , epoch ):
+   def save(self , stimuli_time , epoch ):
       """
       
       """
       return None  
        
-   def stimuli(self, stimuli , stimuli_class, amplitude ,emotional_surpressors  ):
+   def stimuli(self, stimuli , stimuli_class, 
+               amplitude ,emotional_suppressors  ):
        """
        
        """ 
 
        edges = [(u2,v2,e2) for u2,v2,e2  in [self.G.edges(v, data=True ) for u,v,e in self.G.edges("emotion_factors", data=True)  if v == stimuli_class  ][0] if e2["class"] == "emotion_factors"]
        
-       ## how much you can control you emtions
+       ## how much you can control you emotions
        abj_fac = .001
        for frm, trait, prop in edges:
             if frm != stimuli_class: 
@@ -56,7 +57,7 @@ class Emotions():
                    self.moods[mood] = 100 
                       
        abj_fac_2 = .001
-       for mood, weight in emotional_surpressors.items():   
+       for mood, weight in emotional_suppressors.items():   
           if mood in  self.moods:  
               self.moods[mood] = (1 - abj_fac_2)*self.moods[mood]  +  weight*abj_fac_2  
               self.moods[mood]  = round( self.moods[mood], 5)   
@@ -67,7 +68,7 @@ class Emotions():
        """ 
        self.moods = {"happy": 0.5, "sad": 0.0, "fear": 0.0, "disgust" : 0.0,
                       "anger" : 0.0, "bored": 0.0, "surprised" : 0.0,
-                       "stimui_time" : "initial"  , "epoch" : -1} 
+                       "stimuli_time" : "initial"  , "epoch" : -1} 
        """
        self.f_scr = f_scr
        val     = 0.0
@@ -75,7 +76,7 @@ class Emotions():
        i_unmet = len(unmet)
        i_indif = len(indif)
        # should get from experience
-       amplitude = amplitude * self.novelity
+       amplitude = amplitude * self.novelty 
 
        self.moods["sad"]        =  self.moods["sad"]*self.discount
        self.moods["happy"]      =  self.moods["happy"]*self.discount
@@ -84,7 +85,7 @@ class Emotions():
        self.moods["fear"]       =  self.moods["fear"]*self.discount
        self.moods["disgust"]    =  self.moods["disgust"]*self.discount
        self.moods["anger"]      =  self.moods["anger"]*self.discount
-       #still not roight U5u%$VEiV1%EDdPQ
+       #still not right U5u%$VEiV1%EDdPQ
        if i_met < i_unmet: 
           self.moods["sad"]                 =  self.moods["sad"]    + amplitude
           self.moods["happy"]               =  self.moods["happy"]  - amplitude 
@@ -148,7 +149,7 @@ class Emotions():
        """
        
        """
-       t_moods =  [[key, val] for key, val in self.moods.items() if key not in ['epoch','stimui_time'] ]
+       t_moods =  [[key, val] for key, val in self.moods.items() if key not in ['epoch','stimuli_time'] ]
        moods = sorted(t_moods, key=lambda item: item[1]) 
        self.current_mood  = moods[-1][0] 
 

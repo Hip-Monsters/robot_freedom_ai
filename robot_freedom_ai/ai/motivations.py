@@ -8,7 +8,7 @@ License: MIT License
 """ 
 import json  
 from nltk.sentiment import SentimentIntensityAnalyzer
-#from nltk.corpus import subjectivity
+ 
 
 class Motivations(object):
 
@@ -21,7 +21,7 @@ class Motivations(object):
       self.config       = config
       self.personality = personality
       self.discount    = personality.discount
-      self.novelity    = 1 - self.discount 
+      self.novelty     = 1 - self.discount 
       self.motivations  =  motivations 
 
       self.low_memory_mode   = low_memory_mode 
@@ -67,11 +67,11 @@ class Motivations(object):
    def objective(self, met, unmet, indif , mood ):
        """
        Objective 
-       {"enguagement": [-1 ,.5], "novelity": [-1, .05] , "acquisition" : [-1, .5],
+       {"engagement": [-1 ,.5], "novelty ": [-1, .05] , "acquisition" : [-1, .5],
          "creating" : [-1, .25],  "processing": [1, .25] } 
       
        """ 
-       objective = "enguagement"
+       objective = "engagement"
        p_iunmet = 0
        p_met    = 0
 
@@ -91,13 +91,13 @@ class Motivations(object):
                    break
                
        if self.f_scr < -.5:
-            objective = "disenguagement"
+            objective = "disengagement"
        elif self.f_scr < -.1:
             objective = "defuse"
        elif self.f_scr ==0:
             objective = "relax"
        elif self.f_scr >.5:
-            objective = "enguagement"
+            objective = "engagement"
        elif self.f_scr >.1:
             objective = "inspire" 
 
@@ -121,7 +121,7 @@ class Motivations(object):
           
       
       #for goal, factor in self.stimuli_goal_factors[stimuli][stimuli_class].items(): 
-      #     self.motivations[goal] = self.motivations[goal]  +  adjusted*factor[1]* self.novelity*factor[0]
+      #     self.motivations[goal] = self.motivations[goal]  +  adjusted*factor[1]* self.novelty *factor[0]
         
     #  for goal, factor in self.stimuli_goal_factors[stimuli][stimuli_class].items(): 
 
@@ -130,7 +130,7 @@ class Motivations(object):
       for frm, goal, prop in edges:
             if frm != stimuli_class: 
                wght = prop["weight"]
-               self.motivations[goal] = self.motivations[goal] +  adjusted*wght*self.novelity
+               self.motivations[goal] = self.motivations[goal] +  adjusted*wght*self.novelty 
                  
                    
       for key, val in self.motivations.items():
@@ -147,7 +147,7 @@ class Motivations(object):
       indif   = []
       for goal, val in self.motivations.items():
          
-         if goal not in ["epoch", "stimui_time", "dt",
+         if goal not in ["epoch", "stimuli_time", "dt",
                          "SentimentAnalyzerScr", "SentimentAnalyzer",  "creating" ]:
              if val < 0:
                 unmet.append(goal)
@@ -156,22 +156,22 @@ class Motivations(object):
              elif val == 0:
                 indif.append(goal)
        
-      #{"enguagement":  .5, "novelity": .5 , "acquisition" :  .5,
+      #{"engagement":  .5, "novelty ": .5 , "acquisition" :  .5,
       #   "creating" : .5,  "processing": .5 } 
       
       if self.f_scr < -.5:
-          unmet.append("enguagement")
+          unmet.append("engagement")
           unmet.append("creating")
           unmet.append("acquisition")
       elif self.f_scr < -.1:
-          unmet.append("enguagement")
+          unmet.append("engagement")
           unmet.append("creating") 
       elif self.f_scr == 0  and len(self.scrs) > 0:
-          indif.append("enguagement")
+          indif.append("engagement")
           indif.append("creating")
           indif.append("acquisition")
       elif self.f_scr >.5:
-           met.append("enguagement")
+           met.append("engagement")
            met.append("creating")
            met.append("acquisition")
       elif self.f_scr >.1: 

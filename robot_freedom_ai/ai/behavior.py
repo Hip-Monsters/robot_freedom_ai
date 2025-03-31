@@ -1,21 +1,16 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
-  
+# -*- coding: utf-8 -*- 
 """
 Description: AI behavior interface.
 Author: HipMonsters.com  
 License: MIT License  
 """
- 
-import os
+  
 import datetime 
-import json  
-   
- 
+import json   
 from ai.motivations          import Motivations
 from ai.emotions             import Emotions
-from ai.experience           import Experience
-#from dateutil import parser
+from ai.experience           import Experience 
 
 class Behavior():
 
@@ -34,15 +29,15 @@ class Behavior():
        self.st_memory              =  st_memory
        self.lt_memory              =  lt_memory
 
-       self.last_stimui      = None
-       self.stimui_time      = -1
+       self.last_stimuli      = None
+       self.stimuli_time      = -1
        self.epoch            = None
        self.last_update      = None 
               
        
        self.personality = personality  
        self.discount    = self.personality.discount 
-       self.novelity    = 1 - self.discount  
+       self.novelty     = 1 - self.discount  
        self.objective   = self.personality.defaults["objective"]
        self.strategy    = self.personality.defaults["strategy"]
 
@@ -50,8 +45,10 @@ class Behavior():
        if "moods" in row:
             moods       = row["moods"]
        else:
-            moods =  {"happy": 1.5, "sad": 0.0, "fear": 0.0, "disgust" : 0.0, 
-                      "anger" : 0.0, "bored": 0.0, "surprised" : 0.0,  }
+            moods =  {"happy": 1.5, "sad":     0.0,
+                      "fear":  0.0, "disgust": 0.0, 
+                      "anger": 0.0, "bored":   0.0, 
+                      "surprised": 0.0  }
             
        self.emotions    = Emotions(self.robot, 
                                    self.cognitive_control,
@@ -61,26 +58,26 @@ class Behavior():
        if "motivations" in row:
            motivations = row["motivations"]
        else:  
-           motivations = {"enguagement": .5, "novelity": .5 ,
-                           "acquisition": .5, "creating" : .5, 
-                             "processing":  .5, "ultraism" : .5}  
+           motivations = {"engagement":  .5, "novelty":  .5,
+                          "acquisition": .5, "creating": .5, 
+                          "processing":  .5, "ultraism": .5}  
            
        self.motivations = Motivations(self.robot, 
                                       self.config, 
                                       self.cognitive_control,
                                       motivations,
-                                      self.personality ,  
+                                      self.personality,  
                                       self.low_memory_mode)
        
        self.experience  = Experience(self.robot , 
                                       self.config,
                                       self.cognitive_control,
-                                      self.personality ,  
+                                      self.personality,  
                                       self.st_memory,
                                       self.lt_memory,
                                       self.low_memory_mode)
        
-       self.emotional_surpressors = self.experience.emotional_surpressors(self.objective ,
+       self.emotional_suppressors = self.experience.emotional_suppressors(self.objective ,
                                                                           self.strategy ,
                                                                           "wakeup" )
 
@@ -89,23 +86,24 @@ class Behavior():
        """
        return 1
    
-   def determine_class(self, event, cat, met, umet, modifer):
+   def determine_class(self, event, cat, met, umet, modifier):
        """
+       suppressors
        """
        return event + " " + cat
    
  
-   def save_memory(self,stimuli ,stimuli_class, signal ,  amplitude , 
+   def save_memory(self, stimuli ,stimuli_class, signal ,  amplitude , 
                    prior_response, scr, scrs, mood, moods,  objective ,  strategy,  motivations,  
-                   emotional_surpressors, interval,  epoch, stimui_time):
+                   emotional_suppressors, interval,  epoch, stimuli_time):
        """
-       
+       stimuli
        """
         
-       str_stimui_time = str(stimui_time) 
+       str_stimuli_time = str(stimuli_time) 
 
 
-       self.st_memory.memory["stimuli"][str_stimui_time] = {"stimuli" :  stimuli ,
+       self.st_memory.memory["stimuli"][str_stimuli_time] = {"stimuli" :  stimuli ,
                                                              "stimuli_class" : stimuli_class, 
                                                              "amplitude" : amplitude ,
                                                              "signal" : signal ,
@@ -117,13 +115,13 @@ class Behavior():
                                                              "moods" : moods ,
                                                              "objective" : objective ,
                                                              "strategy" : strategy ,
-                                                             "emotional_surpressors" : emotional_surpressors,
-                                                             "stimui_time" : str_stimui_time ,
+                                                             "emotional_suppressors" : emotional_suppressors,
+                                                             "stimuli_time" : str_stimuli_time ,
                                                              "event_interval" : interval,
                                                              "epoch" : epoch }
        ## move to main as some point
        with open(self.config.DATA_PATH + self.robot + "/stimuli.json", "a") as f:
-            f.write( json.dumps(self.st_memory.memory["stimuli"][str_stimui_time])  + "\n")
+            f.write( json.dumps(self.st_memory.memory["stimuli"][str_stimuli_time])  + "\n")
             
        self.last_update      = datetime.datetime.now() 
        
@@ -145,61 +143,65 @@ class Behavior():
         print("\rSelf-Reflection Complete    " + self._space , end="" )   
        
         self.cognitive_control.update_weights()
-        print("\rWieghts Updated             " + self._space , end="" )   
-
+        print("\rWeights Updated             " + self._space , end="" )   
+        
         return True   
           
                 
-   def stimuli(self, stimuli, stimuli_class, signal,  amplitude, prior_response,
-               epoch, stimui_time , last_moved,   last_talked, interval, other={}):
+   def stimuli(self, stimuli_type, stimuli_class, signal,  amplitude, prior_response,
+               epoch, stimuli_time , last_moved,   last_talked, interval, other={}):
        """
        S-O-R Theory with Personality Traits
-       Stimuli Observeration Response
-       Stimuli -> personality + desires + experience -> emtions -> response
+       Stimuli Observation Response
+       Stimuli -> personality + desires + experience -> emotions -> response
        
        """
 
 
-       #1 .what is want is the to use Altruistic quotes to prompt the llm.tone_v1_122
+       #1. what is want is the to use Altruistic quotes to prompt the llm.tone_v1_122
 
-       #2.  cognitive_control loads in common sense to help determine topics
+       #2. cognitive_control loads in common sense to help determine topics
    
        #3. determine if goal is met using nlp from verbal response.else
 
-       #4. Do a follow up questions when confused   ask "do you feel engiaged?"
+       #4. Do a follow up questions when confused ask "do you feel engaged?"
       
-       #5. the use xgboost to learn/ score to pick strategy
+       #5. the use xgboost to learn score to pick strategy
+        
        self.prior_response = prior_response
-       self.stimui        = stimuli 
-       self.stimuli_class = stimuli_class
-       self.amplitude     = amplitude
-       self.stimui_time   = stimui_time
-       ### Log true  
+       self.stimuli_type   = stimuli_type 
+       self.stimuli_class  = stimuli_class
+       self.amplitude      = amplitude
+       self.stimuli_time   = stimuli_time 
 
-       ## higher orrder classification of event TODO
-      # event_class event_cat = self.determine_class(stimuli, stimuli_class)
+       ## higher order classification of event TODO modifier
+       # event_class event_cat = self.determine_class(stimuli, stimuli_class)
 
-       ### Can learn to adjust stimuli class and amplictude- leanr to like what you dont like
-       self.emotional_surpressors    = self.experience.emotional_surpressors(self.objective, 
-                                                                             self.strategy , 
-                                                                             stimuli_class)
-
+       ### Can learn to adjust stimuli class and amplitude- learn to like what you dont like
+       self.emotional_suppressors    = self.experience.emotional_suppressors(self.objective, 
+                                                                              stimuli_class)
+       
        ## How personality affects how event seen
-       adjusted_modifier       = self.cognitive_control.event_modifer(stimuli, stimuli_class, amplitude)
+       adjusted_modifier       = self.cognitive_control.event_modifier(stimuli_type, 
+                                                                       stimuli_class, 
+                                                                       amplitude)
 
  
        ## Check status of motivations
-       met, umet, indif ,scr ,scrs    = self.motivations.goal_achievement(stimuli, stimuli_class,signal,
-                                                                      amplitude, adjusted_modifier , 
-                                                                      stimui_time,  epoch) 
+       met, umet, indif, scr, scrs = self.motivations.goal_achievement(stimuli_type, 
+                                                                       stimuli_class,signal,
+                                                                       amplitude, adjusted_modifier , 
+                                                                       stimuli_time,  epoch) 
        self.scrs  = scrs
        self.scr   = scr 
        self.met   = met
        self.umet  = umet
        self.indif = indif
        # update emotions based on class and modifier
-       self.emotions.stimuli(stimuli, stimuli_class, 
-                             adjusted_modifier ,  self.emotional_surpressors )
+       self.emotions.stimuli(stimuli_type, 
+                             stimuli_class, 
+                             adjusted_modifier,  
+                             self.emotional_suppressors )
        
 
 
@@ -214,9 +216,9 @@ class Behavior():
                                                           last_talked, 
                                                           self.mood)
        # calculate new emotion 
-       self.save_memory(stimuli ,stimuli_class, signal , amplitude , self.prior_response,
+       self.save_memory(stimuli_type ,stimuli_class, signal , amplitude , self.prior_response,
                         self.scr, self.scrs,  self.mood, self.emotions.moods, 
                         self.objective , self.strategy,  self.motivations.motivations ,   
-                        self.emotional_surpressors, interval, epoch, stimui_time)
+                        self.emotional_suppressors, interval, epoch, stimuli_time)
       
          

@@ -1,12 +1,13 @@
-# -*- coding: utf-8 -*-
-  
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
+
 """
 Description: This builds and controls a simple chatbot design to run on a RaspberryPi.
 Author: HipMonsters.com 
 Date Created: Jan 1, 2021
 Date Modified: Oct 10, 2024
 Version: 8.0
-Plaftorm: RaspberryPi
+Platform: RaspberryPi
 License: MIT License  
 """
 import os
@@ -29,17 +30,17 @@ class Response(object):
         
         """ 
         self.robot     = robot 
-        self.nerves   = nerves
-        self.module   = "chat"  
-        self.config   = config
-        self.settings = settings  
-        self.os       = self.config.OS
+        self.nerves    = nerves
+        self.module    = "chat"  
+        self.config    = config
+        self.settings  = settings  
+        self.os        = self.config.OS
         self.st_memory = st_memory
         self.lt_memory = lt_memory
         self.polling_rate = polling_rate
 
         self.low_memory_mode = False
-        if self.config.CONFIG["low_memory_mode"] ==1: 
+        if self.config.CONFIG["low_memory_mode"] == 1: 
             self.low_memory_mode = True
 
         if lt_memory is None:
@@ -56,7 +57,7 @@ class Response(object):
               
         if cognitive_control is None: 
               from .cognitive_control import CognitiveControl  
-              cognitive_control       = CognitiveControl(robot,  config, settings, personality, self.low_memory_mode)
+              cognitive_control = CognitiveControl(robot,  config, settings, personality, self.low_memory_mode)
 
         self.cognitive_control = cognitive_control
         self.personality       = personality
@@ -67,8 +68,7 @@ class Response(object):
            self.chat_params = {"type":"CSim"}
         else:
            self.chat_params = self.settings["chat"] 
-
-
+ 
         ## How to Formulate a verbal response    
         if self.chat_params["type"] == "CSim": 
             self.bot = self.lt_memory
@@ -76,9 +76,7 @@ class Response(object):
 
         elif self.chat_params["type"] == "Ollama":
             from  .models.ollama_rf import  OllamaRF
-
-           # config, cognitive_control, personality, lt_memory, st_memory, full_name, name ,topics , tones=["Appreciative"], 
-            #      params= {},   log=True, repeat_log= True
+ 
             self.bot = OllamaRF(config, self.cognitive_control, self.personality, self.lt_memory, self.st_memory, robot.replace("_", " "), robot,  ["cats"],  log=True)
             self.type = "Ollama"
 
@@ -98,8 +96,7 @@ class Response(object):
  
            new, cmds = self.nerves.pop(self.module) 
            if new:
-               
-              # acmds = cmds.split(">") 
+                
                dcmds = json.loads(cmds.strip()) 
 
                if dcmds["action"] == "respond":

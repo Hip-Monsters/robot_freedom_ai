@@ -22,7 +22,7 @@ class Personality(object):
   
       self.reaction_threshold = .5 
       self.movement_threshold = .5 
-      self.speach_threshold   = 3  
+      self.speech_threshold   = 3  
 
       with open(self.config.DATA_PATH + self.robot + "/personality.json") as f:
            data = ''
@@ -30,7 +30,7 @@ class Personality(object):
               data += row  
            data = json.loads(data)
 
-      self.forgetfullness = data["forgetfullness"]
+      self.forgetfulness = data["forgetfulness"]
       self.discount       = data["discount"]
       self.traits         = data["traits"]
       self.defaults       = data["defaults"]
@@ -78,12 +78,12 @@ class Personality(object):
           traitsB.append("calm") 
 
       elif self.traits["emotional_stability"] < -.3:
-          traitsB.append( "irratic")
+          traitsB.append( "erratic")
 
-      if self.traits["socialability"] > .3:
-          traitsB.append("socialble") 
+      if self.traits["sociability"] > .3:
+          traitsB.append("sociable") 
 
-      elif self.traits["socialability"] < -.3:
+      elif self.traits["sociability"] < -.3:
           traitsB.append( "shy")
 
       if self.traits["openness"] > .3:
@@ -123,20 +123,20 @@ class Personality(object):
      "traits": { "kindness": 0.8,
                "emotional_stability":  0.2,
                "openness":  0.5,
-               "socialability":  0.6,
+               "sociability":  0.6,
                "thoughtfulness":  0.9
       """
       self.emotion_factors = {} 
       
-      self.adj_socialable      = self.trait_factors["kindness"] /2.0       + self.trait_factors["socialability"] /2.0
+      self.adj_sociable        = self.trait_factors["kindness"] /2.0       + self.trait_factors["sociability"] /2.0
       self.adj_open            = self.trait_factors["openness"] /2.0       + self.trait_factors["emotional_stability"] /2.0
-      self.adj_thoughtful          = self.trait_factors["thoughtfulness"] /2.0 + self.trait_factors["socialability"] /2.0
+      self.adj_thoughtful      = self.trait_factors["thoughtfulness"] /2.0 + self.trait_factors["sociability"] /2.0
       self.inv_adj_stable      = 1.0 - self.trait_factors["emotional_stability"]   
       self.inv_adj_stable_open = 1.0 - self.trait_factors["emotional_stability"]  /2.0    + self.trait_factors["openness"] /2.0  
-      self.inv_adj_stable_open_social = 1.0 - self.trait_factors["emotional_stability"]  /3.0    + self.trait_factors["socialability"] /3.0   + self.trait_factors["openness"] /3.0  
+      self.inv_adj_stable_open_social = 1.0 - self.trait_factors["emotional_stability"]  /3.0    + self.trait_factors["sociability"] /3.0   + self.trait_factors["openness"] /3.0  
        
-      if self.adj_socialable == 0:
-          self.adj_socialable = .001
+      if self.adj_sociable == 0:
+          self.adj_sociable = .001
       if self.adj_thoughtful == 0:
           self.adj_thoughtful = .001
       if self.inv_adj_stable_open_social == 0:
@@ -162,15 +162,15 @@ class Personality(object):
                                            "happy":     0.0 *  self.inv_adj_stable_open , 
                                            "disgust":  -.05 *  self.inv_adj_stable_open }
  
-      self.emotion_factors["speech"]    = {"sad":        -.5  * self.adj_socialable, 
-                                           "surprised":    0  * self.adj_socialable ,
-                                           "bored":      -.1  * self.adj_socialable  , 
-                                           "fear":       -.05 * self.adj_socialable, 
-                                           "happy":       .1  * self.adj_socialable , 
-                                           "disgust":    -.05 * self.adj_socialable }
+      self.emotion_factors["speech"]    = {"sad":        -.5  * self.adj_sociable, 
+                                           "surprised":    0  * self.adj_sociable ,
+                                           "bored":      -.1  * self.adj_sociable  , 
+                                           "fear":       -.05 * self.adj_sociable, 
+                                           "happy":       .1  * self.adj_sociable , 
+                                           "disgust":    -.05 * self.adj_sociable }
       
-      self.emotion_factors["touch"]     = {"sad":        -.5  * self.adj_socialable,  
-                                           "bored":       .5  * self.adj_socialable }
+      self.emotion_factors["touch"]     = {"sad":        -.5  * self.adj_sociable,  
+                                           "bored":       .5  * self.adj_sociable }
       
       self.emotion_factors["quiet"]     = {"sad":         .5 *self.adj_thoughtful , 
                                            "surprised":   -1 *self.adj_thoughtful  ,
@@ -186,13 +186,13 @@ class Personality(object):
                                            "happy":      .1 * self.adj_open  , 
                                            "disgust":   -.1 * self.adj_open  }
       
-      self.emotion_factors["tempature"] = {"sad":       -.5 * self.inv_adj_stable_open, 
+      self.emotion_factors["temperature"] = {"sad":       -.5 * self.inv_adj_stable_open, 
                                            "bored":      .5 * self.inv_adj_stable_open,}
       
       self.emotion_factors["humidity"]  = {"sad":       -.5 * self.inv_adj_stable_open, 
                                            "bored":      .5 * self.inv_adj_stable_open,}
       
-      self.emotion_factors["balence"]   = {"sad":       -.5 * self.inv_adj_stable, 
+      self.emotion_factors["balance"]   = {"sad":       -.5 * self.inv_adj_stable, 
                                            "surprised":  .5 * self.inv_adj_stable, 
                                            "bored":     .05 * self.inv_adj_stable,}
       

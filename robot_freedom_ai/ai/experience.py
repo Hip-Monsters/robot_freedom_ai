@@ -9,10 +9,8 @@ License: MIT License
 
 import os
 import datetime 
-import json 
-import random  
-import numpy as np
-import networkx as nx 
+import json  
+import numpy as np  
 
 
 if __name__ == "__main__": 
@@ -32,7 +30,7 @@ class Experience():
        self.config                  = config 
        self.personality             = personality
        self.discount                = personality.discount
-       self.novelity                = 1 - self.discount 
+       self.novelty                 = 1 - self.discount 
        self.prior_statement         = "" 
        self.cognitive_control       = cognitive_control
        self.G                       = cognitive_control.G
@@ -46,7 +44,7 @@ class Experience():
        
        self.reaction_threshold  = personality.reaction_threshold  
        self.movement_threshold  = personality.movement_threshold  
-       self.speach_threshold    = personality.speach_threshold
+       self.speech_threshold    = personality.speech_threshold
  
             
        self.objectives        =  list(self.cognitive_control.objectives.keys())  
@@ -54,7 +52,7 @@ class Experience():
        self.goals             = self.cognitive_control.goals   
        self.mapped_stimuli    = self.cognitive_control.mapped_stimuli 
        self.mapped_strategies     =  self.cognitive_control.mapped_strategies
-       self._emotional_surpressors =  self.cognitive_control.emotional_surpressors
+       self._emotional_suppressors =  self.cognitive_control.emotional_suppressors
 
        self.words = {}
        self.dates_done_words = set([])
@@ -65,7 +63,7 @@ class Experience():
        self.experience["objectives_2_moods"]   = {} 
        self.experience["senses_2_moods"]       = {} 
        self.experience["objective_2_strategy"] = {}  
-       self.experience["strategy_2_moodscr"]   = {}  
+       self.experience["strategy_2_mood_scr"]   = {}  
        self.experience["strategy_2_mood"]      = {}
        self.experience["objectives_2_mood"]    = {}
        
@@ -88,7 +86,7 @@ class Experience():
        if last_moved <  self.movement_threshold: 
            return   "quiet"
        
-       elif last_talked < self.speach_threshold : 
+       elif last_talked < self.speech_threshold : 
            return   "quiet"  
          
     #   potentials =       list(self.cognitive_control.objective_2_strategy[objective]["tones"].keys())
@@ -107,7 +105,7 @@ class Experience():
  
        return draw[0]
 
-   def emotional_surpressors(self, 
+   def emotional_suppressors(self, 
                              objective, 
                              strategy,
                              stimuli_class = "", 
@@ -115,7 +113,7 @@ class Experience():
        """
        
        """ 
-       return   {v2 : e2["weight"]  for u2,v2,e2  in self.G.edges(objective, data=True)  if e2["class"] == "emotional_surpressors" and e2["from"] == "emotional_surpressors"}
+       return   {v2 : e2["weight"]  for u2,v2,e2  in self.G.edges(objective, data=True)  if e2["class"] == "emotional_suppressors" and e2["from"] == "emotional_suppressors"}
      
    
    def __moods_expand(self, ds):  
@@ -344,25 +342,25 @@ class Experience():
         for seg  in segments:
             if len(Y[seg]) < 10:
                 continue
-            prior_wghts =  None
+            prior_weights =  None
             if model_name in self.experience:
-                if "wghts" in self.experience[model_name]:
-                  if seg in self.experience[model_name]["wghts"]: 
-                     prior_wghts = [v for k, v in self.experience[model_name]["wghts"][seg]]
+                if "weights" in self.experience[model_name]:
+                  if seg in self.experience[model_name]["weights"]: 
+                     prior_weights = [v for k, v in self.experience[model_name]["weights"][seg]]
 
-            if prior_wghts is None:
-                prior_wghts = [1.0 for v in  feats]  
+            if prior_weights is None:
+                prior_weights = [1.0 for v in  feats]  
  
-            gds  = GDS(X1[seg], Y[seg],  prior_wghts, LR)
+            gds  = GDS(X1[seg], Y[seg],  prior_weights, LR)
             gds.train()    
 
-            wghts = gds.weights()
-            mdl_results["wghts"]  = {}
+            weights = gds.weights()
+            mdl_results["weights"]  = {}
             for irow, feat in enumerate(feats):
-               if seg not in mdl_results["wghts"]:
-                   mdl_results["wghts"][seg] = []
+               if seg not in mdl_results["weights"]:
+                   mdl_results["weights"][seg] = []
 
-               mdl_results["wghts"][seg].append( [feat , wghts[irow]])
+               mdl_results["weights"][seg].append( [feat , weights[irow]])
 
         mdl_results["creation_date"] = str(datetime.datetime.now())
         mdl_results["feats"]    = list(feats)
@@ -383,11 +381,11 @@ class Experience():
        self.run_model("objectives_2_moods",index, target, cols, short_term_memory , False)
 
    ##################### These are for update reactions         
-   # objectives_2_moods      emotional_surpressors  # best mood for objective
-   # senses_2_moods          emotion_factors        # try not to react 
-   # objective_2_strategy    objective_2_strategy   # best stragies for objective (availabel strats)
-   # strategy_2_moodscr      todo                   # best straegy by impact on mood (filter on impact)
-   # strategy_mood           tood                   # best straegt by current mood (filter on current mood)
+   # objectives_2_moods       emotional_suppressors  # best mood for objective
+   # senses_2_moods           emotion_factors        # try not to react 
+   # objective_2_strategy     objective_2_strategy   # best stragies for objective (availabel strats)
+   # strategy_2_mood_scr      todo                   # best straegy by impact on mood (filter on impact)
+   # strategy_mood            todo                   # best straegt by current mood (filter on current mood)
    #####################  
 
   
@@ -446,7 +444,7 @@ class Experience():
         self.run_model("strategy_2_mood",index, target, cols, short_term_memory, False )
  
        
-   def strategy_2_moodscr(self,short_term_memory):
+   def strategy_2_mood_scr(self,short_term_memory):
         """
 
         """  
@@ -454,7 +452,7 @@ class Experience():
         index       = "strategy"
         target      = "mood_scr" 
         cols        = [ "moods", "event_interval"] 
-        self.run_model("strategy_2_moodscr",index, target, cols, short_term_memory, False )
+        self.run_model("strategy_2_mood_scr",index, target, cols, short_term_memory, False )
 
 
  
@@ -466,7 +464,7 @@ class Experience():
    # objectives_umet     
    # objectives_neu  
    
-   ##################### These are for global reassisment of straegies  
+   ##################### These are for global      
    # strategy moods  # may be pulled in 
    # strategy_met         
    # strategy_umet     
@@ -487,13 +485,13 @@ class Experience():
  
    def word_whts(self, short_term_memory):
        """
-       disenguagement
+       disengagement
        
        """ 
-       if 'word_wghts' in  self.words:
-           word_wghts  =  self.words["word_wghts"] 
+       if 'word_weights' in  self.words:
+           word_weights  =  self.words["word_weights"] 
        else:
-           word_wghts = {}
+           word_weights = {}
 
        for key, details in short_term_memory["stimuli"].items():
           if key in self.dates_done_words:
@@ -503,28 +501,28 @@ class Experience():
               details["prior_response"] = {}
                       
           if 'speech' in details["prior_response"]:
-              prior_statment = details["prior_response"]["speech"][0] 
+              prior_statement = details["prior_response"]["speech"][0] 
               scrs = details["scrs"]
               if len(scrs) == 0:
                   continue 
               
-              for word in prior_statment.split():
+              for word in prior_statement.split():
                   if len(word) <= 3:
                        continue 
                   
-                  if word in word_wghts:
-                      old = word_wghts[word] 
+                  if word in word_weights:
+                      old = word_weights[word] 
                       _vals = {}
                       for k , v in scrs.items():
                           _vals[k] = .5*old[k]  + .5*v
 
-                      word_wghts[word] = _vals
+                      word_weights[word] = _vals
                   else:
-                      word_wghts[word] = scrs
+                      word_weights[word] = scrs
  
        self.words["creation_date"]   = str(datetime.datetime.now())
        self.words["epoch"]           = self.epoch 
-       self.words["word_wghts"]      =  word_wghts
+       self.words["word_weights"]      =  word_weights
 
    def  reflect(self, short_term_memory={}):
         """
@@ -547,7 +545,7 @@ class Experience():
         self.senses_2_moods( short_term_memory) 
 
         self.strategy_2_mood(short_term_memory)
-        self.strategy_2_moodscr(short_term_memory)
+        self.strategy_2_mood_scr(short_term_memory)
 
         self.objectives_2_moods( short_term_memory) 
         self.objective_2_strategy( short_term_memory)   

@@ -7,9 +7,7 @@ Author: HipMonsters.com
 License: MIT License  
 """
 #https://codelucky.com/python-networkx/
-import os
-import subprocess
-
+import os  
 import networkx as nx
 import json 
 
@@ -41,13 +39,13 @@ class CognitiveControl(object):
               'surprised' : [0.5 , 5 ]} 
 
       self.scrs  = {'neg': 0.0, 'neu': 1.0, 'pos': 0.0, 'compound': 0.0}
-      #self.objectives  =  ["enguagement","disenguagement"  ,
+      #self.objectives  =  ["engagement","disengagement"  ,
        #                          "defuse" , "relax", "inspire" ]   
  
       self.factors = ["happy" , "sad" , "fear" , "disgust", "anger" ,  "bored" , 
                        "surprise" , "event_interval" , "stimuli_class"]  
        
-      self.goals  =  ["enguagement", "novelity" , "acquisition" , "creating" , 
+      self.goals  =  ["engagement", "novelty " , "acquisition" , "creating" , 
                        "processing", "ultraism" ]   
        
       self.mapped_stimuli =  [ 'speech', 'noise', 'touch',
@@ -108,10 +106,11 @@ class CognitiveControl(object):
            self.new_weights = new_weights
            self.new_words   = new_words 
         
-      #objectives_2_moods   emotional_surpressors 
+      #objectives_2_moods   emotional_suppressors 
       #senses_2_moods       emotion_factors  
       #objective_2_strategy      objective_2_strategy
-      
+      if "objective_2_strategy" not in self.new_weights:
+          return True
       print("Updating objective_2_strategy")  
       for key, models in self.new_weights["objective_2_strategy"].items(): 
           if type(models) is dict: 
@@ -136,34 +135,34 @@ class CognitiveControl(object):
                      # print(potentials)
                              
  
-      print("Updating emotional_surpressors")
-      print("DLONE") 
+      print("Updating emotional_suppressors")
+      print("DONE") 
  
-      for objective, wghts in self.new_weights["objectives_2_moods"]["wghts"].items():  
+      for objective, weights in self.new_weights["objectives_2_moods"]["weights"].items():  
            
            
-           edges = [(u2,v2,e2) for u2,v2,e2  in [self.G.edges(v, data=True ) for u,v,e in self.G.edges("emotional_surpressors", data=True)  if v == objective  ][0] if e2["class"] == "emotional_surpressors"]
-           #print("what", edges, wghts) 
+           edges = [(u2,v2,e2) for u2,v2,e2  in [self.G.edges(v, data=True ) for u,v,e in self.G.edges("emotional_suppressors", data=True)  if v == objective  ][0] if e2["class"] == "emotional_suppressors"]
+           #print("what", edges, weights) 
 
-           for mood, wgt in wghts: 
+           for mood, wgt in weights: 
              if mood != "event_interval":  
                  if self.G.has_edge(objective, mood):
                       self.G.edges[objective ,mood]['weight'] = wgt 
                  else:
                       self.G.add_edge(objective, mood , weight=wgt)
-                      prop = {"class": "emotional_surpressors"  , "from": objective }
+                      prop = {"class": "emotional_suppressors"  , "from": objective }
                       attrs = {(objective, mood): prop}
                       nx.set_edge_attributes(self.G, attrs)
                       print("learned new objective to mood")
                       
       ####  Done
       print("Updating emotion_factors")   
-      for sense, wghts in self.new_weights["senses_2_moods"]["wghts"].items(): 
+      for sense, weights in self.new_weights["senses_2_moods"]["weights"].items(): 
            stimuli_class = sense
            edges = [(u2,v2,e2) for u2,v2,e2  in [self.G.edges(v, data=True ) for u,v,e in self.G.edges("emotion_factors", data=True)  if v == stimuli_class  ][0] if e2["class"] == "emotion_factors"]
-           #print("what", edges, wghts) 
+           #print("what", edges, weights) 
 
-           for mood, wgt in wghts:  
+           for mood, wgt in weights:  
           
              if mood != "event_interval":   
                  if self.G.has_edge(sense, mood):
@@ -176,7 +175,7 @@ class CognitiveControl(object):
                       print("learned new sense to mood") 
           # edges = [(u2,v2,e2) for u2,v2,e2  in [self.G.edges(v, data=True ) for u,v,e in self.G.edges("emotion_factors", data=True)  if v == stimuli_class  ][0] if e2["class"] == "emotion_factors"]
           # print(edges)
-      
+      return True        
 
    def create_graph(self):
       """
@@ -202,9 +201,9 @@ class CognitiveControl(object):
               return  True 
       
 
-      self.emotional_surpressors = {"enguagement": {"happy":0.0, "sad":0.0, "fear":0.0, "disgust":0.0, "anger":0.0, 
+      self.emotional_suppressors = {"engagement": {"happy":0.0, "sad":0.0, "fear":0.0, "disgust":0.0, "anger":0.0, 
                                                      "bored":0.0, "surprise":0.0, "time_delta":0.0, "stimuli_class":0.0} ,
-                                      "disenguagement":{"happy":0.0, "sad":0.0, "fear":0.0, "disgust":0.0, "anger":0.0, 
+                                      "disengagement":{"happy":0.0, "sad":0.0, "fear":0.0, "disgust":0.0, "anger":0.0, 
                                                          "bored":0.0, "surprise":0.0, "time_delta":0.0, "stimuli_class":0.0} ,
                                       "defuse":{"happy":0.0, "sad":0.0, "fear":0.0, "disgust":0.0, "anger":0.0,
                                                             "bored":0.0, "surprise":0.0, "time_delta":0.0, "stimuli_class":0.0} ,
@@ -213,10 +212,10 @@ class CognitiveControl(object):
                                       "inspire": {"happy":0.0, "sad":0.0, "fear":0.0, "disgust":0.0, "anger":0.0, 
                                                        "bored":0.0, "surprise":0.0, "time_delta":0.0, "stimuli_class":0.0}  }
   
-      s_class = "emotional_surpressors"
+      s_class = "emotional_suppressors"
       prop = {"class":s_class, "from":""}
       add_node(self.G, s_class) 
-      for sense, reactions in self.emotional_surpressors.items():
+      for sense, reactions in self.emotional_suppressors.items():
               
               add_node(self.G, sense) 
               add_edge(self.G, s_class, sense , 1, prop)
@@ -231,11 +230,11 @@ class CognitiveControl(object):
       ### Not 
       ###
       #################
-      self.objectives = {"enguagement":      {"mood": {"happy":1, "sad":1}    , "met" :{"creating":1, "processing":1} , "unmet":{"acquisition":1}   }, 
-                          "disenguagement":  {"mood": {"disgust":1}     , "met" :{"acquisition":1} , "unmet":{"creating":1, "processing":1}   }, 
-                          "defuse":          {"mood": {"fear":1,"anger":1} , "met" :{"enguagement":1} , "unmet":{"angry":1}   }, 
-                          "relax":           {"mood": {"surprise":1}     , "met" :{"enguagement":1} , "unmet":{"angry":1}   }, 
-                          "inspire":         {"mood": {"bored":1}     , "met" :{"enguagement":1} , "unmet":{"novelity":1}   }, 
+      self.objectives = {"engagement":      {"mood": {"happy":1, "sad":1}    , "met" :{"creating":1, "processing":1} , "unmet":{"acquisition":1}   }, 
+                          "disengagement":  {"mood": {"disgust":1}     , "met" :{"acquisition":1} , "unmet":{"creating":1, "processing":1}   }, 
+                          "defuse":          {"mood": {"fear":1,"anger":1} , "met" :{"engagement":1} , "unmet":{"angry":1}   }, 
+                          "relax":           {"mood": {"surprise":1}     , "met" :{"engagement":1} , "unmet":{"angry":1}   }, 
+                          "inspire":         {"mood": {"bored":1}     , "met" :{"engagement":1} , "unmet":{"novelty ":1}   }, 
                           } 
       
 
@@ -267,24 +266,24 @@ class CognitiveControl(object):
       self.sense_types["physical"]["quiet"]    = 1 
       self.sense_types["physical"]["movement"]  = 1
       self.sense_types["physical"]["distance"]  = 1
-      self.sense_types["physical"]["tempature"] = 1
+      self.sense_types["physical"]["temperature"] = 1
       self.sense_types["physical"]["humidity"]  = 1
       self.sense_types["physical"]["touch"]     = 1
-      self.sense_types["physical"]["balence"]  = 1 
+      self.sense_types["physical"]["balance"]  = 1 
       self.sense_types["physical"]["light"]    = 1 
 
       self.stimuli_goal_factors = {}
       self.stimuli_goal_factors = {}
-      self.stimuli_goal_factors["noise"]  = {"enguagement":      .0  , "novelity":  .7  , "acquisition" :    .1 ,  "creating" :  .0 ,  "processing":   .0  } 
-      self.stimuli_goal_factors["speech"] = {"enguagement":      .5 , "novelity":   .2  , "acquisition" :    .5 ,  "creating" :  .25,  "processing":   .0  } 
-      self.stimuli_goal_factors["quiet"]  = {"enguagement":     -.5 , "novelity":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
-      self.stimuli_goal_factors["movement"]  = {"enguagement":  -.5 , "novelity":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
-      self.stimuli_goal_factors["distance"]  = {"enguagement":  -.5 , "novelity":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
-      self.stimuli_goal_factors["tempature"] = {"enguagement":  -.5 , "novelity":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
-      self.stimuli_goal_factors["humidity"]  = {"enguagement":  -.5 , "novelity":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
-      self.stimuli_goal_factors["touch"]     = {"enguagement":  -.5 , "novelity":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
-      self.stimuli_goal_factors["balence"]   = {"enguagement":  -.5 , "novelity":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
-      self.stimuli_goal_factors["light"]     = {"enguagement":  -.5 , "novelity":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
+      self.stimuli_goal_factors["noise"]  = {"engagement":      .0  , "novelty ":  .7  , "acquisition" :    .1 ,  "creating" :  .0 ,  "processing":   .0  } 
+      self.stimuli_goal_factors["speech"] = {"engagement":      .5 , "novelty ":   .2  , "acquisition" :    .5 ,  "creating" :  .25,  "processing":   .0  } 
+      self.stimuli_goal_factors["quiet"]  = {"engagement":     -.5 , "novelty ":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
+      self.stimuli_goal_factors["movement"]  = {"engagement":  -.5 , "novelty ":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
+      self.stimuli_goal_factors["distance"]  = {"engagement":  -.5 , "novelty ":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
+      self.stimuli_goal_factors["temperature"] = {"engagement":  -.5 , "novelty ":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
+      self.stimuli_goal_factors["humidity"]  = {"engagement":  -.5 , "novelty ":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
+      self.stimuli_goal_factors["touch"]     = {"engagement":  -.5 , "novelty ":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
+      self.stimuli_goal_factors["balance"]   = {"engagement":  -.5 , "novelty ":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
+      self.stimuli_goal_factors["light"]     = {"engagement":  -.5 , "novelty ":   -.05  , "acquisition" :  -.5 , "creating" : -.25,  "processing":   .25  } 
   
 
 
@@ -348,9 +347,9 @@ class CognitiveControl(object):
       self.stimuli_factors["quiet"]    = {"emotional_stability": -.25, "thoughtfulness": .5 }
       self.stimuli_factors["movement"] = {"emotional_stability": -.25, "thoughtfulness": .5 }
       self.stimuli_factors["distance"] = {"emotional_stability": -.25, "thoughtfulness": .5 }
-      self.stimuli_factors["tempature"]= {"emotional_stability": -.25, "thoughtfulness": .5 }
+      self.stimuli_factors["temperature"]= {"emotional_stability": -.25, "thoughtfulness": .5 }
       self.stimuli_factors["humidity"] = {"emotional_stability": -.25, "thoughtfulness": .5 }     
-      self.stimuli_factors["balence"]  = {"emotional_stability": -.25, "thoughtfulness": .5 }
+      self.stimuli_factors["balance"]  = {"emotional_stability": -.25, "thoughtfulness": .5 }
       self.stimuli_factors["light"]    = {"emotional_stability": -.25, "thoughtfulness": .5 }
       self.stimuli_factors["touch"]    = {"emotional_stability": -.25, "thoughtfulness": .5 }
       
@@ -391,10 +390,10 @@ class CognitiveControl(object):
       ##
       #######
 
-      self.objective_2_strategy  =  { "enguagement" :   {"tones" : {'Absurd':1, 'Witty':1, 'Amused':1} }, 
+      self.objective_2_strategy  =  { "engagement" :   {"tones" : {'Absurd':1, 'Witty':1, 'Amused':1} }, 
                                   "defuse" :   {"tones" : {'Appreciative':1, 'Admiring':1}}, 
                                   "inspire":   {"tones" : {'Inspirational':1, 'Informative':1, 'Thoughtful':1} }, 
-                                  "disenguagement": {"tones" : {'Diplomatic':1}},
+                                  "disengagement": {"tones" : {'Diplomatic':1}},
                                   "relax"  :   {"tones" : {'Altruistic':1, 'Benevolent':1}},
                                  } 
         
@@ -416,7 +415,7 @@ class CognitiveControl(object):
                   prop2 = {"class": s_class, "from":key}
                   add_edge(self.G, unique_type, tone, wght, prop2 )
 
-   def event_modifer(self, stimuli, stimuli_class,  magnitude=0):
+   def event_modifier(self, stimuli, stimuli_class,  magnitude=0):
 
       """
       """ 
@@ -434,7 +433,7 @@ class CognitiveControl(object):
       return adjusted
    
       
-   def modifers(self, stimuli, stimuli_class,  met, unmet): 
+   def modifiers(self, stimuli, stimuli_class,  met, unmet): 
       """
 
 
