@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
   
 """
-Description: Viualization daemon that expresses emotion and sensor input.
+Description: Visualization daemon that expresses emotion and sensor input.
 Author: HipMonsters.com 
 License: MIT License
 """ 
@@ -32,7 +32,7 @@ SENSES["distance"]    = {"color":green}
 SENSES["movement"]    = {"color":orange}
 SENSES["noise"]       = {"color":blue}
 SENSES["speech"]      = {"color":gold} 
-SENSES["balence"]     = {"color":red}
+SENSES["balance"]     = {"color":red}
 SENSES["temperature"] = {"color":pink}
 SENSES["humidity"]    = {"color":cyan}
 SENSES["quiet"]       = {"color":light_purple} 

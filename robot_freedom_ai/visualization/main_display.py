@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
   
 """
-Description: Viualization daemon that expresses emotion and sensor input.
+Description: Visualization daemon that expresses emotion and sensor input.
 Author: HipMonsters.com 
 License: MIT License
 """
@@ -40,7 +40,7 @@ SENSES["distance"]    = {"color":green}
 SENSES["movement"]    = {"color":orange}
 SENSES["noise"]       = {"color":blue}
 SENSES["speech"]      = {"color":gold} 
-SENSES["balence"]     = {"color":red}
+SENSES["balance"]     = {"color":red}
 SENSES["temperature"] = {"color":pink}
 SENSES["humidity"]    = {"color":cyan}
 SENSES["quiet"]       = {"color":light_purple} 
@@ -62,8 +62,7 @@ class MainDisplay():
         self.settings = settings
         self.config   = config 
         self.status   = "Stimuli : none  Mood : neutral"  
-        self.clock    = pygame.time.Clock()
-
+        self.clock     = pygame.time.Clock() 
         self.touch_img = pygame.image.load('./assets/squirrel.jpg') 
 
         pygame.display.set_caption('Robot Freedom ' + robot)
@@ -71,18 +70,19 @@ class MainDisplay():
        #1024x600 
       #  self.screen = pygame.display.set_mode((640, 480))
 
-        config   =  self.config.CONFIG  
-        self.x_dim  = config["visual_x"]
-        self.y_dim  = config["visual_y"] 
-        self.x_start  =  int(self.x_dim /2)
-        self.y_start  =  int(self.y_dim /2)
-        self.screen = pygame.display.set_mode((self.x_dim, self.y_dim))
+        config        = self.config.CONFIG  
+        self.x_dim    = config["visual_x"]
+        self.y_dim    = config["visual_y"] 
+        self.x_start  = int(self.x_dim /2)
+        self.y_start  = int(self.y_dim /2)
+        self.screen   = pygame.display.set_mode((self.x_dim, self.y_dim))
+
        # self.screen = pygame.display.set_mode((300, 512))
-        self.info   = pygame.font.SysFont('Comic Sans MS', 20)
+        self.info     = pygame.font.SysFont('Comic Sans MS', 20)
 
 
         pygame.mouse.set_cursor(*pygame.cursors.arrow) 
-        self.back = (255,255,255)
+        self.back  = (255,255,255)
         self.color = (255,255,0) 
         self.history     =  []
 
@@ -93,8 +93,14 @@ class MainDisplay():
         
         """
         i = 1
-        while True: 
+        running = True
+        while running: 
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                     running = False
             self.screen.fill(self.back) 
+
  
             fin  = []
             for circle in self.history:
@@ -188,12 +194,12 @@ class MainDisplay():
                                              100,
                                              setting["color"])
                  
-                self.history.append({"x":self.x_start, 
-                                     "y":self.y_start, 
-                                     "radius":100, 
-                                     "stimuli" : stimuli,
-                                     "color":setting["color"],
-                                     "direction" : random.randint(1,8)}) 
+                self.history.append({"x": self.x_start, 
+                                     "y": self.y_start, 
+                                     "radius": 100, 
+                                     "stimuli": stimuli,
+                                     "color": setting["color"],
+                                     "direction": random.randint(1,8)}) 
             else: 
                pass
                 
