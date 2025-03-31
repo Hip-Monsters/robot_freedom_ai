@@ -5,25 +5,12 @@
 """ 
 import warnings
 warnings.filterwarnings("ignore")
- 
-import csv
-import time 
-import json
-import os  
-import pickle 
+  
 import string   
-import random 
-import re   
-import shutil    
+import re      
 import tokenize     
-import io 
-import joblib 
-import sys
-
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_ollama.llms import OllamaLLM 
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity 
+import io  
+   
 import nltk
 from nltk.stem import WordNetLemmatizer   
 
@@ -70,8 +57,8 @@ def parser(dialogue):
     dialogue  =  dialogue.replace('<', " ")
     dialogue  =  dialogue.replace('>', " ")  
 
-    dialogue  =  dialogue.replace( "`", "SINGALQUOTE")
-    dialogue  =  dialogue.replace( "'", "SINGALQUOTE")
+    dialogue  =  dialogue.replace( "`", "SINGLE_QUOTE")
+    dialogue  =  dialogue.replace( "'", "SINGLE_QUOTE")
     dialogue  =  dialogue.replace( "(", "BRACKETLEFT ")
     dialogue  =  dialogue.replace( ")", " BRACKETRIGHT") 
     dialogue  =  dialogue.replace( "[", "BRACKETLEFT ")
@@ -121,7 +108,7 @@ def parser(dialogue):
         if skip is False and token.string != "BRACKETRIGHT":
             p_tok  = token.string
             p_type = token.type 
-            p_tok = p_tok.replace( "SINGALQUOTE", "'")
+            p_tok = p_tok.replace( "SINGLE_QUOTE", "'")
             p_tok = p_tok.replace( "COMMA", ",")
             p_tok = p_tok.replace( "BRACKETRIGHT", " ")
             p_tok = p_tok.replace( "BRACKETLEFT", " ")
@@ -240,7 +227,7 @@ if __name__ == "__main__":
     AI: "Yes, it does. It's like the unknown" """
     
     dialogue="""
-    ai: I can provide more infor about cats. Cats are cute and"
+    ai: I can provide more information about cats. Cats are cute and"
     """
       
     dialogue = """Human: Hello, robot! How are you doing today?
