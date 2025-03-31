@@ -70,8 +70,8 @@ def parser(dialogue):
     dialogue  =  dialogue.replace('<', " ")
     dialogue  =  dialogue.replace('>', " ")  
 
-    dialogue  =  dialogue.replace( "`", "SINGALQUOTE")
-    dialogue  =  dialogue.replace( "'", "SINGALQUOTE")
+    dialogue  =  dialogue.replace( "`", "SINGLE_QUOTE")
+    dialogue  =  dialogue.replace( "'", "SINGLE_QUOTE")
     dialogue  =  dialogue.replace( "(", "BRACKETLEFT ")
     dialogue  =  dialogue.replace( ")", " BRACKETRIGHT") 
     dialogue  =  dialogue.replace( "[", "BRACKETLEFT ")
@@ -121,7 +121,7 @@ def parser(dialogue):
         if skip is False and token.string != "BRACKETRIGHT":
             p_tok  = token.string
             p_type = token.type 
-            p_tok = p_tok.replace( "SINGALQUOTE", "'")
+            p_tok = p_tok.replace( "SINGLE_QUOTE", "'")
             p_tok = p_tok.replace( "COMMA", ",")
             p_tok = p_tok.replace( "BRACKETRIGHT", " ")
             p_tok = p_tok.replace( "BRACKETLEFT", " ")
