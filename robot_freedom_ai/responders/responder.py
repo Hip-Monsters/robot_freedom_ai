@@ -1,22 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Description: The agent daemon that allows the Artifical Intelligence to process sensors signals and control the robot.
-Author: Mood_Relate.org 
+Description: The agent daemon that allows the Artificial Intelligence to process sensors signals and control the robot.
+Author: HipMonsters.com 
 Date Created: Jan 1, 2023
 Date Modified: Oct 10, 2024
 Version: 4.0
-Plaftorm: RaspberryPi
+Platform: RaspberryPi
 License: MIT License 
-"""
-import json
-import sys  
-import csv
-import datetime  
-import time  
-
-####    Libraries   ################
- 
- 
+""" 
+import sys    
 import argparse
 
 parser = argparse.ArgumentParser() 
@@ -37,6 +29,7 @@ class Responder(object):
         """ 
  
         self.agent         = agent  
+        self.wait_length   = 2400 #800
         self.polling_rate  = agent.polling_rate
         self.robot         = agent.robot
         self.video         = agent.video

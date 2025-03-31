@@ -1,4 +1,4 @@
- 
+# -*- coding: utf-8 -*-
 import sys
 from . responder import Responder, handle_exceptions 
 import datetime
@@ -37,13 +37,13 @@ class  CommandResponder(Responder):
 
         elif commands["cmd"] == "wait_for_message":   
               signal_val =  self.wait_for_message([commands["params"]] )
-              self.agent.handlers["MemoryHandler"].remeber(commands["params"], signal_val)
+              self.agent.handlers["MemoryHandler"].remember(commands["params"], signal_val)
 
         elif commands["cmd"] == "move":   
             self.send_command( commands["params"] ,self.robot )
 
         elif commands["cmd"] == "chat":  
-            self.behavior.stimui_time = datetime.datetime.now()
+            self.behavior.stimuli_time = datetime.datetime.now()
             response  = self.agent.interactions.responses("sense",
                                                     "voice", 
                                                     commands["params"], 
@@ -78,7 +78,7 @@ class  CommandResponder(Responder):
 
         else : 
            print("ERROR IN REMOTE COMMAND ")
-           print("UNKOWN REMOTE COMMAND ", input)
+           print("UNKNOWN REMOTE COMMAND ", input)
            print("ERROR IN REMOTE COMMAND ") 
            return False
              

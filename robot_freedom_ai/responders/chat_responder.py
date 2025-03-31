@@ -12,7 +12,7 @@ class ChatResponder(Responder):
                           mood="happy",
                           tone="Appreciative", 
                           topics=["cat"], 
-                          objective="enguagement",
+                          objective="engagement",
                           lexicon="Appreciative"):
         """
         
@@ -118,7 +118,7 @@ class ChatResponder(Responder):
                    self.agent.handlers["MobilityHandler"].send_command("random", self.robot) 
                #sys.stdout.flush()
                
-            if detect or i_cnt > 800: 
+            if detect or i_cnt > self.wait_length : 
                 break   
  
         
