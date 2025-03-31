@@ -6,23 +6,12 @@ Author: HipMonsters.com
 Date Created: Jan 1, 2021
 Date Modified: Oct 10, 2024
 Version: 5.0
-Plaftorm: RaspberryPi
-License: MIT License  
-https://rhasspy.github.io/piper-samples/
-"""
-"""
-
- https://github.com/GDCorner/no-bs-llms/blob/main/article3/tts-piper-stream.py#L11
- https://stackoverflow.com/questions/19230983/prevent-alsa-underruns-with-pyaudio
- https://stackoverflow.com/questions/78642033/python-sounddevice-sound-is-played-way-to-fast-over-the-speaker
- 16000
- https://stackoverflow.com/questions/66959516/why-does-pyaudio-cut-off-audio-from-numpy-array
-               
-"""
+Platform: RaspberryPi
+License: MIT License   
+""" 
 from os import system
 import time
-import os
- 
+import os 
 import json
 import numpy as np  
 import subprocess 
@@ -291,15 +280,9 @@ class Voice(object):
                    self.nerves.set("spoke", "Done")   
 
                elif acmds[0] == "speak":
-                    
-               #    self.nerves.set("spoke", "") 
+                     
                    self.speak(acmds[2])  
-
-
-               #if acmds[1] == "wait":
-               #    self.wait()  
-               #    self.nerves.set("spoke", "") 
-      
+ 
 
            time.sleep(self.polling_rate)
 
